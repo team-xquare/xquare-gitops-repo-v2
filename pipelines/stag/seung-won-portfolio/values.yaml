@@ -1,0 +1,10 @@
+club: mac
+name: seung-won-portfolio
+organization: TIL-playground
+repository: portfolio
+branch: develop
+environment: stag
+containerPort: 3000
+domain: seungwon-portfolio.xquare.app
+language: javascript
+critical_service: false

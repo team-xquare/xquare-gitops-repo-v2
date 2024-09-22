@@ -1,0 +1,8 @@
+{
+  "jdk_version": 17,
+  "output_dir": "build/libs/Equus-Api-Gateway-0.0.1-SNAPSHOT.jar",
+  "builder": "gradle",
+  "build_commands": [
+    "./gradlew build -x test --build-cache"
+  ]
+}

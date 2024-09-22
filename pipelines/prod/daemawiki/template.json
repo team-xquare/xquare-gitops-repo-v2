@@ -1,0 +1,8 @@
+{
+  "jdk_version": 21,
+  "output_dir": "/build/libs/*.jar",
+  "builder": "gradle",
+  "build_commands": [
+    "./gradlew build -x test --build-cache"
+  ]
+}

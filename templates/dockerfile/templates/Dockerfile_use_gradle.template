@@ -1,0 +1,4 @@
+FROM openjdk:{{ jdk_version }}-jdk-slim
+ENV TZ=Asia/Seoul
+COPY {{ output_dir }} app.jar
+ENTRYPOINT ["java", "-jar", "/app.jar"]

@@ -1,0 +1,10 @@
+club: coco
+name: coco
+organization: COCO-Service
+repository: BE-COCO
+branch: main
+environment: stag
+containerPort: 8080
+domain: coco-stag.xquare.app
+language: java
+critical_service: false

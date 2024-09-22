@@ -1,0 +1,19 @@
+{%- if builder == "node" %}
+FROM node:{{ node_version }}
+
+COPY . .
+
+{%- for command in build_commands %}
+RUN {{ command }}
+{%- endfor %}
+
+EXPOSE {{ port }}
+
+{%- if command %}
+CMD [
+  {%- for arg in command.split() %}
+  {%- if not loop.first %}, {% endif %}"{{ arg }}"
+  {%- endfor %}]
+{%- endif %}
+
+{%- endif %}
