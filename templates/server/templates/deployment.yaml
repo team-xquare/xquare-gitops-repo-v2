@@ -11,7 +11,7 @@ metadata:
     test: test
     environment: {{ .Values.environment }}
 spec:
-  {{- if eq $fullname "xquare-infra-prod"}}
+  {{- if eq .Values.critical_service true }}
   replicas: 2
   {{- else }}
   replicas: 1

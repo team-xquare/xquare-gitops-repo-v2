@@ -7,3 +7,4 @@ environment: prod
 containerPort: 8080
 domain: xquare-infra-backend.xquare.app
 language: java
+critical_service: true
