@@ -54,7 +54,7 @@ metadata:
     test: test
     environment: prod
 spec:
-  replicas: 1
+  replicas: 2
   revisionHistoryLimit: 0
   strategy:
     rollingUpdate:
