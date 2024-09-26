@@ -96,7 +96,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: equus-status-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/equus-status-prod:prod-gg0g7kjj
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/equus-status-prod:prod-ww1vo28v
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -166,49 +166,3 @@ spec:
     containerPolicies:
       - containerName: "*"
         controlledResources: [ "memory" ]
----
-# Source: applications/templates/virtual-service.yaml
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: equus-status-prod-domain-ingress
-  labels:
-    app.kubernetes.io/instance: xquare-ingress
-  namespace: entry-prod
-spec:
-  gateways:
-    - istio-system/xquare-ingressgateway
-  hosts:
-    - equus-status.xquare.app
-  http:
-    - name: equus-status
-      route:
-        - destination:
-            host: 'equus-status-prod.entry-prod.svc.cluster.local'
-            port:
-              number: 8080
-      corsPolicy:
-        allowOrigins:
-          - regex: ".*"
-        allowMethods:
-          - POST
-          - GET
-          - PUT
-          - PATCH
-          - DELETE
-          - OPTIONS
-        allowCredentials: true
-        allowHeaders:
-          - content-type
-          - authorization
-          - accept
-          - accept-encoding
-          - Refresh-Token
-          - X-Not-Using-Xquare-Auth
-          - Oauth-Token
-          - oa-token
-          - Request-User-Id
-          - Request-User-Role
-          - X-Refresh-Token
-          - x-identifier
-        maxAge: "24h"
