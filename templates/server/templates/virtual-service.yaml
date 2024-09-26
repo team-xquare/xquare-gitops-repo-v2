@@ -1,7 +1,7 @@
 {{- $environment := .Values.environment }}
 {{- $fullname := (printf "%s-%s" .Values.name .Values.environment) }}
 {{- $namespace := (printf "%s-%s" .Values.club .Values.environment) }}
-
+{{- if not .Values.private_service }}
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -46,3 +46,4 @@ spec:
           - X-Refresh-Token
           - x-identifier
         maxAge: "24h"
+{{- end }}
