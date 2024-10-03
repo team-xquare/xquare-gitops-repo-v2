@@ -62,3 +62,5 @@ pipelines:
                         SANITIZED_NAME=$(echo {{ .Values.name }} | sed 's/-/_/g')
                         RESOURCE_VAR_NAME="${SANITIZED_NAME}_REPOSITORY"
                         ./resource_deploy.sh {{ .Values.name }} {{ .Values.environment }} ${!RESOURCE_VAR_NAME}
+
+
