@@ -45,7 +45,7 @@ jobs:
       - name: Commit The New Image Reference
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "release :: deploy pipeline"
+          commit_message: "release :: deploy changed manifest"
           branch: main
           commit_options: '--no-verify --signoff'
           repository: .
