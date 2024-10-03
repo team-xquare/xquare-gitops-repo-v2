@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          ref: v2
+          ref: main
 
       - name: Sleep 3 Second
         run: |
