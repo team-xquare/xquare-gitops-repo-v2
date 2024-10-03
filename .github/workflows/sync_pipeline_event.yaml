@@ -1,8 +1,6 @@
 name: sync-pipeline
 on:
   push:
-    branches:
-      - main
   repository_dispatch:
     types: [generate_pipeline]
 jobs:
