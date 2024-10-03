@@ -15,7 +15,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          ref: v2
+          ref: main
 
       - name: Create Directory
         run: mkdir -p ./pipelines/${{ github.event.client_payload.environment }}/${{ github.event.client_payload.name }}
