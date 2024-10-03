@@ -20,11 +20,11 @@ jobs:
       - name: Grant execute permission for script
         run: chmod +x ./generate_pipeline.sh
 
-      - name: Validate
-        run: ./generate_pipeline.sh
-
       - name: Pull latest changes
         run: git pull origin main
+
+      - name: Validate
+        run: ./generate_pipeline.sh
 
       - name: Commit The New Image Reference
         uses: stefanzweifel/git-auto-commit-action@v4
