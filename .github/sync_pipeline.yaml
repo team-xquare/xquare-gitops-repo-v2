@@ -4,10 +4,7 @@ on:
     branches:
       - main
     paths:
-      - 'pipelines/**/**/values.yaml'
       - 'templates/gocd/templates/deploy.yaml'
-  repository_dispatch:
-    types: [generate_pipeline]
 jobs:
   ci:
     runs-on: ubuntu-latest
@@ -23,10 +20,10 @@ jobs:
           ref: main
 
       - name: Grant execute permission for script
-        run: chmod +x ./.github/generate_pipeline.sh
+        run: chmod +x ./generate_pipeline.sh
 
       - name: Validate
-        run: ./.github/generate_pipeline.sh
+        run: ./generate_pipeline.sh
 
       - name: Pull latest changes
         run: git pull origin main
@@ -41,12 +38,3 @@ jobs:
           commit_user_name: XQUARE GitOps Bot
           commit_user_email: teamxquare@gmail.com
           commit_author: XQUARE GitOps Bot <teamxquare@gmail.com>
-          
-      - name: Wait for 1 second
-        run: sleep 1s
-        
-      - name: Trigger GoCD Pipeline
-        run: |
-          curl -X POST "https://gocd.xquare.app/go/api/pipelines/${{ github.event.client_payload.pipeline_name }}/schedule" \
-          -H "Accept: application/vnd.go.cd.v1+json" \
-          -H "X-GoCD-Confirm: xZiORT40ts4+d9wkFNPExsxaTRyloVKgRWAeo+6CU0s="
