@@ -88,7 +88,13 @@ build_commands=$(parse_json '.build_commands[]')
 build_dir=$(parse_json '.build_dir')
 
 echo "Move Directory"
-eval "cd $build_dir"
+
+if [ -z "$build_dir" ]; then
+  echo "build_dir is not set, moving to root directory"
+  cd /
+else
+  eval "cd $build_dir"
+fi
 
 echo "Executing: $build_commands"
 eval "$build_commands"
