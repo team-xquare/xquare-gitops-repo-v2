@@ -59,7 +59,7 @@ jobs:
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.XQUARE_ACTION_GHP_TOKEN }}
-          repository: team-xquare/xquare-gitops-repo
+          repository: team-xquare/xquare-gitops-repo-v2
           event-type: generate_pipeline
           client-payload: |
             {
