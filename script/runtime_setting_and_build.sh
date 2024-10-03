@@ -85,6 +85,11 @@ echo "Runtime setup completed successfully"
 echo "Starting build process"
 build_commands=$(parse_json '.build_commands[]')
 
+build_dir=$(parse_json '.build_dir')
+
+echo "Move Directory"
+eval "cd $build_dir"
+
 echo "Executing: $build_commands"
 eval "$build_commands"
 if [ $? -ne 0 ]; then
