@@ -93,10 +93,15 @@ if [ -z "$build_dir" ]; then
   echo "build_dir is not set, moving to root directory"
   cd ./
 else
-  if [ "$build_dir" == /* ]; then
+  if [ "${build_dir#/}" != "$build_dir" ]; then
     build_dir=".$build_dir"
   fi
-  eval "cd $build_dir"
+  if [ -d "$build_dir" ]; then
+    cd "$build_dir"
+  else
+    echo "Directory $build_dir does not exist."
+    exit 1
+  fi
 fi
 
 echo "Executing: $build_commands"
