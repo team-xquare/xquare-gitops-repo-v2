@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - 'templates/gocd/templates/deploy.yaml'
+      - 'templates/gocd/templates/**'
 jobs:
   ci:
     runs-on: ubuntu-latest
