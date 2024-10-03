@@ -91,8 +91,11 @@ echo "Move Directory"
 
 if [ -z "$build_dir" ]; then
   echo "build_dir is not set, moving to root directory"
-  cd /
+  cd ./
 else
+  if [[ "$build_dir" == /* ]]; then
+    build_dir=".$build_dir"
+  fi
   eval "cd $build_dir"
 fi
 
