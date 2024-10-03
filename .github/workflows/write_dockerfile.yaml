@@ -63,7 +63,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "release :: Add Dockerfile for ${{ github.event.client_payload.name }}"
-          branch: v2
+          branch: main
           repository: .
           commit_user_name: XQUARE GitOps Bot
           commit_user_email: teamxquare@gmail.com

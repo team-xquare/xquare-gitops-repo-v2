@@ -39,7 +39,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "release :: Add values.yaml for ${{ github.event.client_payload.name }}"
-          branch: v2
+          branch: main
           repository: .
           commit_user_name: XQUARE GitOps Bot
           commit_user_email: teamxquare@gmail.com
@@ -53,7 +53,7 @@ jobs:
           curl -X PUT $url
 
       - name: Pull latest changes
-        run: git pull origin v2
+        run: git pull origin main
 
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v1
@@ -63,6 +63,6 @@ jobs:
           event-type: generate_pipeline
           client-payload: |
             {
-              "ref" : "v2",
+              "ref" : "main",
               "pipeline_name" : "build-${{ github.event.client_payload.name }}-${{ github.event.client_payload.environment }}"
             }
