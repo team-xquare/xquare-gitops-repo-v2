@@ -99,8 +99,8 @@ else
   if [ -d "$build_dir" ]; then
     cd "$build_dir"
   else
-    echo "Directory $build_dir does not exist."
-    exit 1
+    echo "build_dir is not set, moving to root directory"
+    cd ./
   fi
 fi
 
