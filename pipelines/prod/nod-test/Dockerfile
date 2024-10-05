@@ -4,4 +4,4 @@ FROM node:22.5.1
 COPY . .
 
 EXPOSE 3000
-CMD ["nodemon", "app.js"]
+CMD ["node", "app.js"]
