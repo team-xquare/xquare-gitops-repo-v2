@@ -95,7 +95,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: nod-test-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/nod-test-prod:prod-3a5zqwh7
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/nod-test-prod:prod-di6er4h1
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
