@@ -1,0 +1,10 @@
+club: growingbegger
+name: node-test
+organization: team-xquare
+repository: node-test
+branch: main
+environment: prod
+containerPort: 3000
+domain: node-test-prod.xquare.app
+language: javascript
+critical_service: false

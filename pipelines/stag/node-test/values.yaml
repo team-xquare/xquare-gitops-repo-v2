@@ -1,0 +1,10 @@
+club: growingbegger
+name: node-test
+organization: team-xquare
+repository: node-test
+branch: develop
+environment: stag
+containerPort: 3000
+domain: node-stag.xquare.app
+language: javascript
+critical_service: false

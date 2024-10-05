@@ -3,35 +3,35 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  namespace: xquare-prod
-  name: nod-test-prod
+  namespace: growingbegger-prod
+  name: node-test-prod
 spec:
   maxUnavailable: 0
   selector:
     matchLabels:
-      app.kubernetes.io/name: nod-test-prod
+      app.kubernetes.io/name: node-test-prod
 ---
 # Source: applications/templates/vaultsecret.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: nod-test-prod-account
-  namespace: xquare-prod
+  name: node-test-prod-account
+  namespace: growingbegger-prod
 ---
 # Source: applications/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: xquare-prod
-  name: nod-test-prod
+  namespace: growingbegger-prod
+  name: node-test-prod
   labels:
-    app: nod-test-prod
-    project: nod-test
+    app: node-test-prod
+    project: node-test
     environment: prod
 spec:
   type: ClusterIP
   selector:
-    app: nod-test-prod
+    app: node-test-prod
   ports:
     - name: http
       port: 80
@@ -46,11 +46,11 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: xquare-prod
-  name: nod-test-prod
+  namespace: growingbegger-prod
+  name: node-test-prod
   labels:
-    app: nod-test-prod
-    project: nod-test
+    app: node-test-prod
+    project: node-test
     test: test
     environment: prod
 spec:
@@ -63,7 +63,7 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app: nod-test-prod
+      app: node-test-prod
   template:
     metadata:      
       annotations:
@@ -71,10 +71,10 @@ spec:
         sidecar.istio.io/proxyCPU: "5m"
         sidecar.istio.io/proxyMemory: "128Mi"
       labels:
-        app: nod-test-prod
-        project: nod-test
+        app: node-test-prod
+        project: node-test
     spec:
-      serviceAccountName: nod-test-prod-account
+      serviceAccountName: node-test-prod-account
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -83,7 +83,7 @@ spec:
                   - key: app
                     operator: In
                     values:
-                      - nod-test-prod
+                      - node-test-prod
               topologyKey: "kubernetes.io/hostname"
       nodeSelector:
         Karpenter: enabled
@@ -94,14 +94,14 @@ spec:
           value: "true"
       terminationGracePeriodSeconds: 120
       containers:
-        - name: nod-test-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/nod-test-prod:prod-48w79raa
+        - name: node-test-prod
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/node-test-prod:prod-8wn85bhp
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
           envFrom:
           - secretRef:
-              name: nod-test-prod
+              name: node-test-prod
           resources:
             requests:
               memory: "500Mi"
@@ -120,14 +120,14 @@ spec:
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultAuth
 metadata:
-  name: nod-test-prod-auth
-  namespace: xquare-prod
+  name: node-test-prod-auth
+  namespace: growingbegger-prod
 spec:
   method: kubernetes
   mount: kubernetes
   kubernetes:
     role: xquare
-    serviceAccount: nod-test-prod-account
+    serviceAccount: node-test-prod-account
     audiences:
       - vault
 ---
@@ -135,30 +135,30 @@ spec:
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultDynamicSecret
 metadata:
-  name: nod-test-prod-secret
-  namespace: xquare-prod
+  name: node-test-prod-secret
+  namespace: growingbegger-prod
 spec:
   mount: xquare-kv
-  path: nod-test-prod
+  path: node-test-prod
   destination:
-    name: nod-test-prod
+    name: node-test-prod
     create: true
-  vaultAuthRef: xquare-prod/nod-test-prod-auth
+  vaultAuthRef: growingbegger-prod/node-test-prod-auth
   rolloutRestartTargets:
     - kind: Deployment
-      name: nod-test-prod
+      name: node-test-prod
 ---
 # Source: applications/templates/vpa.yaml
 apiVersion: autoscaling.k8s.io/v1
 kind: VerticalPodAutoscaler
 metadata:
-  name: nod-test-prod-vpa
-  namespace: xquare-prod
+  name: node-test-prod-vpa
+  namespace: growingbegger-prod
 spec:
   targetRef:
     apiVersion: "apps/v1"
     kind:       Deployment
-    name:       nod-test-prod
+    name:       node-test-prod
   updatePolicy:
     updateMode: "Auto"
   resourcePolicy:
@@ -170,20 +170,20 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: nod-test-prod-domain-ingress
+  name: node-test-prod-domain-ingress
   labels:
     app.kubernetes.io/instance: xquare-ingress
-  namespace: xquare-prod
+  namespace: growingbegger-prod
 spec:
   gateways:
     - istio-system/xquare-ingressgateway
   hosts:
-    - node-test.xquare.app
+    - node-test-prod.xquare.app
   http:
-    - name: nod-test
+    - name: node-test
       route:
         - destination:
-            host: 'nod-test-prod.xquare-prod.svc.cluster.local'
+            host: 'node-test-prod.growingbegger-prod.svc.cluster.local'
             port:
               number: 3000
       corsPolicy:
