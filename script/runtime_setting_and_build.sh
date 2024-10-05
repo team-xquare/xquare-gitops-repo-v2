@@ -74,6 +74,19 @@ case "$builder" in
 
         node --version
         ;;
+    "node_with_nginx")
+        node_version=$(parse_json '.node_version')
+
+        if [ -z "$node_version" ]; then
+            echo "Error: node_version not found in JSON data"
+            exit 1
+        fi
+
+        echo "Selecting or installing Node.js version $node_version"
+        select_or_install_node "$node_version"
+
+        node --version
+        ;;
     *)
         echo "Unsupported builder: $builder"
         exit 1
