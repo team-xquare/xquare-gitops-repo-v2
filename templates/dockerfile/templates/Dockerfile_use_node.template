@@ -3,10 +3,6 @@ FROM node:{{ node_version }}
 
 COPY . .
 
-{%- for command in build_commands %}
-RUN {{ command }}
-{%- endfor %}
-
 EXPOSE {{ port }}
 
 {%- if command %}
