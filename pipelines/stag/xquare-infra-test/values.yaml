@@ -1,0 +1,10 @@
+club: xquare
+name: xquare-infra-test
+organization: team-xquare
+repository: xquare-infra-frontend
+branch: develop
+environment: stag
+containerPort: 3000
+domain: xquare-infra-test-stag.xquare.app
+language: javascript
+critical_service: false
