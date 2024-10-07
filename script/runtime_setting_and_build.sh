@@ -18,8 +18,6 @@ parse_json() {
 }
 
 select_or_install_jdk() {
-    echo "Debug"
-    whoami
     version=$1
     if update-java-alternatives -l | grep "java-1.$version"; then
         update-java-alternatives -s java-1.$version.0-openjdk-amd64
@@ -50,6 +48,24 @@ select_or_install_node() {
     fi
 }
 
+install_nest() {
+    if ! command -v nest > /dev/null 2>&1; then
+        echo "NestJS를 설치 중입니다..."
+        npm install -g @nestjs/cli
+    else
+        echo "NestJS가 이미 설치되어 있습니다."
+    fi
+}
+
+install_yarn() {
+    if ! command -v yarn > /dev/null 2>&1; then
+        echo "Yarn을 설치 중입니다..."
+        npm install -g yarn
+    else
+        echo "Yarn이 이미 설치되어 있습니다."
+    fi
+}
+
 builder=$(parse_json '.builder')
 
 case "$builder" in
@@ -74,12 +90,8 @@ case "$builder" in
 
         node --version
 
-        # Yarn 설치
-        if ! command -v yarn > /dev/null 2>&1; then
-            echo "Yarn을 설치 중입니다..."
-            npm install -g yarn
-        fi
-
+        install_yarn
+        install_nest
         yarn --version
         ;;
     "node_with_nginx")
@@ -95,12 +107,7 @@ case "$builder" in
 
         node --version
 
-        # Yarn 설치
-        if ! command -v yarn > /dev/null 2>&1; then
-            echo "Yarn을 설치 중입니다..."
-            npm install -g yarn
-        fi
-
+        install_yarn
         yarn --version
         ;;
     *)
@@ -122,7 +129,7 @@ if [ -z "$build_dir" ]; then
   echo "build_dir이 설정되지 않았습니다. 루트 디렉토리로 이동합니다."
   cd ./
 else
-  if [ "${build_dir#/}" != "$build_dir" ]; then
+  if [ "${build_dir#/}" != "$build_dir" ];then
     build_dir=".$build_dir"
   fi
   if [ -d "$build_dir" ]; then
