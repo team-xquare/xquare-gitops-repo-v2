@@ -95,7 +95,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: repo-convert-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/repo-convert-prod:prod-rmqikxti
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/repo-convert-prod:prod-mq2ozwk8
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3005
