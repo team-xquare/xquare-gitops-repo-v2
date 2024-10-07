@@ -1,0 +1,10 @@
+club: eeats
+name: eeats
+organization: team-eeats
+repository: eeats-server
+branch: develop
+environment: stag
+containerPort: 3000
+domain: eeats-stag.xquare.app
+language: javascript
+critical_service: false
