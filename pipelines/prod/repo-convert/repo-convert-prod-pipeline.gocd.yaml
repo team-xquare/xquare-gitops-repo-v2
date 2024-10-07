@@ -12,7 +12,7 @@ pipelines:
         git: https://github.com/DSM-Repo/Whopper-JR
         shallow_clone: false
         auto_update: true
-        branch: main
+        branch: mastart
     stages:
       - build:
           jobs:
