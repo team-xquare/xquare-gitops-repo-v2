@@ -2,7 +2,7 @@ club: repo
 name: repo-convert
 organization: DSM-Repo
 repository: Whopper-JR
-branch: main
+branch: mastart
 environment: prod
 containerPort: 3005
 domain: repo-conv.xquare.app
