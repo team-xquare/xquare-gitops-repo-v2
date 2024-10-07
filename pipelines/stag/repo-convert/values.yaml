@@ -1,0 +1,10 @@
+club: repo
+name: repo-convert
+organization: DSM-Repo
+repository: Whopper-JR
+branch: develop
+environment: stag
+containerPort: 3005
+domain: repo-conv-stag.xquare.app
+language: javascript
+critical_service: false
