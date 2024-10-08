@@ -45,20 +45,12 @@ spec:
         defaultMode: 0744
     - name: docker-volume
       persistentVolumeClaim:
-        claimName: {{ .Values.name }}-{{ .Values.environment }}-pvc
+        claimName: {{ .Values.name }}-{{ .Values.environment }}-docker-pvc
     - name: gradle-volume
       persistentVolumeClaim:
-        claimName: {{ .Values.name }}-{{ .Values.environment }}-pvc
+        claimName: {{ .Values.name }}-{{ .Values.environment }}-application-pvc
   tolerations:
     - key: "xquare/server"
       operator: "Equal"
       value: "true"
       effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: "Karpenter"
-                operator: In
-                values: ["enabled"]
