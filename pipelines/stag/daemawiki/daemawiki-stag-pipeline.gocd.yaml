@@ -28,11 +28,6 @@ pipelines:
                     arguments:
                       - -c
                       - |
-                        curl -o runtime_setting_and_build.sh https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/script/runtime_setting_and_build.sh
-                        curl -o template.json https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/pipelines/stag/daemawiki/template.json
-                        chmod +x runtime_setting_and_build.sh
-                        ./runtime_setting_and_build.sh template.json
-
                         curl -o docker_build.sh https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/script/docker_build.sh
                         curl -o Dockerfile https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/pipelines/stag/daemawiki/Dockerfile
                         chmod +x docker_build.sh
