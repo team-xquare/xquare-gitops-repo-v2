@@ -1,4 +1,10 @@
 FROM openjdk:{{ jdk_version }}-jdk-slim
 ENV TZ=Asia/Seoul
+
+{% for command in build_commands %}
+RUN --mount=type=cache,target=/root/.gradle \
+    {{ command }}
+{% endfor %}
+
 COPY {{ output_dir }} app.jar
 ENTRYPOINT ["java", "-jar", "/app.jar"]

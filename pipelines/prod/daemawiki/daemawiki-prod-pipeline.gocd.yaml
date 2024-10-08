@@ -1,5 +1,5 @@
 ---
-# Source: gocd/templates/deploy.yaml
+# Source: gocd/templates/pipeline.yaml
 format_version: 11
 pipelines:
   build-daemawiki-prod:
