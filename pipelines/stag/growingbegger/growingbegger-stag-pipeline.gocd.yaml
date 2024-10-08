@@ -18,8 +18,6 @@ pipelines:
           jobs:
             build:
               elastic_profile_id: growingbegger-stag-agent-profile
-              resources:
-                - build
               artifacts:
                 - build:
                     source: build_result.env
