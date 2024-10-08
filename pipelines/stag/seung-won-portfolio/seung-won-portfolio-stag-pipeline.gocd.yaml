@@ -18,8 +18,6 @@ pipelines:
           jobs:
             build:
               elastic_profile_id: seung-won-portfolio-stag-agent-profile
-              resources:
-                - build
               artifacts:
                 - build:
                     source: build_result.env
