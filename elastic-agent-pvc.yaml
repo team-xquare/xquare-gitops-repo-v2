@@ -1,8 +1,10 @@
+---
+# Source: gocd/templates/elastic-agent-pvc.yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   namespace: gocd
-  name: {{ .Values.name }}-{{ .Values.environment }}-docker-pvc
+  name: xquare-infra-test-stag-docker-pvc
 spec:
   accessModes:
     - ReadWriteMany
@@ -11,11 +13,12 @@ spec:
       storage: 2.5Gi
   storageClassName: gp2
 ---
+# Source: gocd/templates/elastic-agent-pvc.yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   namespace: gocd
-  name: {{ .Values.name }}-{{ .Values.environment }}-application-pvc
+  name: xquare-infra-test-stag-application-pvc
 spec:
   accessModes:
     - ReadWriteMany
