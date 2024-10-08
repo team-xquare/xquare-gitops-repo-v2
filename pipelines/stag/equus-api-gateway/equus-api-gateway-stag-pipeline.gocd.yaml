@@ -17,6 +17,7 @@ pipelines:
       - build:
           jobs:
             build:
+              elastic_profile_id: equus-api-gateway-stag-agent-profile
               resources:
                 - build
               artifacts:

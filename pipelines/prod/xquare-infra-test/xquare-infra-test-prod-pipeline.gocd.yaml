@@ -17,6 +17,7 @@ pipelines:
       - build:
           jobs:
             build:
+              elastic_profile_id: xquare-infra-test-prod-agent-profile
               resources:
                 - build
               artifacts:

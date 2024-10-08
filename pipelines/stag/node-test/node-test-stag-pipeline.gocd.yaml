@@ -17,6 +17,7 @@ pipelines:
       - build:
           jobs:
             build:
+              elastic_profile_id: node-test-stag-agent-profile
               resources:
                 - build
               artifacts:
