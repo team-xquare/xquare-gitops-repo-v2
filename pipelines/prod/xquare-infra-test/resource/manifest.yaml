@@ -95,7 +95,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: xquare-infra-test-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/xquare-infra-test-prod:prod-kdycmukz
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/xquare-infra-test-prod:prod-1le0w3i3
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000

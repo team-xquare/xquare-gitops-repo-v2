@@ -3,58 +3,58 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  namespace: entry-prod
-  name: equus-application-prod
+  namespace: repo-prod
+  name: repo-convert-prod
 spec:
   maxUnavailable: 0
   selector:
     matchLabels:
-      app.kubernetes.io/name: equus-application-prod
+      app.kubernetes.io/name: repo-convert-prod
 ---
 # Source: applications/templates/vaultsecret.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: equus-application-prod-account
-  namespace: entry-prod
+  name: repo-convert-prod-account
+  namespace: repo-prod
 ---
 # Source: applications/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: entry-prod
-  name: equus-application-prod
+  namespace: repo-prod
+  name: repo-convert-prod
   labels:
-    app: equus-application-prod
-    project: equus-application
+    app: repo-convert-prod
+    project: repo-convert
     environment: prod
 spec:
   type: ClusterIP
   selector:
-    app: equus-application-prod
+    app: repo-convert-prod
   ports:
     - name: http
       port: 80
-      targetPort: 8080
+      targetPort: 3005
       protocol: TCP
     - name: port
-      port: 8080
-      targetPort: 8080
+      port: 3005
+      targetPort: 3005
       protocol: TCP
 ---
 # Source: applications/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: entry-prod
-  name: equus-application-prod
+  namespace: repo-prod
+  name: repo-convert-prod
   labels:
-    app: equus-application-prod
-    project: equus-application
+    app: repo-convert-prod
+    project: repo-convert
     test: test
     environment: prod
 spec:
-  replicas: 2
+  replicas: 1
   revisionHistoryLimit: 0
   strategy:
     rollingUpdate:
@@ -63,19 +63,18 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app: equus-application-prod
+      app: repo-convert-prod
   template:
     metadata:      
       annotations:
         sidecar.istio.io/rewriteAppHTTPProbers: "false"
         sidecar.istio.io/proxyCPU: "5m"
         sidecar.istio.io/proxyMemory: "128Mi"
-        instrumentation.opentelemetry.io/inject-java: "true"
       labels:
-        app: equus-application-prod
-        project: equus-application
+        app: repo-convert-prod
+        project: repo-convert
     spec:
-      serviceAccountName: equus-application-prod-account
+      serviceAccountName: repo-convert-prod-account
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -84,25 +83,25 @@ spec:
                   - key: app
                     operator: In
                     values:
-                      - equus-application-prod
+                      - repo-convert-prod
               topologyKey: "kubernetes.io/hostname"
       nodeSelector:
         Karpenter: enabled
       tolerations:
         - effect: "NoSchedule"
-          key: xquare/critical_service
+          key: xquare/server
           operator: "Equal"
           value: "true"
       terminationGracePeriodSeconds: 120
       containers:
-        - name: equus-application-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/equus-application-prod:prod-x1grr33t
+        - name: repo-convert-prod
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/repo-convert-prod:prod-mq2ozwk8
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8080
+            - containerPort: 3005
           envFrom:
           - secretRef:
-              name: equus-application-prod
+              name: repo-convert-prod
           resources:
             requests:
               memory: "500Mi"
@@ -112,7 +111,7 @@ spec:
               memory: "2Gi"
           readinessProbe:
             tcpSocket:
-              port: 8080
+              port: 3005
             initialDelaySeconds: 20
             periodSeconds: 10
             successThreshold: 3
@@ -121,14 +120,14 @@ spec:
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultAuth
 metadata:
-  name: equus-application-prod-auth
-  namespace: entry-prod
+  name: repo-convert-prod-auth
+  namespace: repo-prod
 spec:
   method: kubernetes
   mount: kubernetes
   kubernetes:
     role: xquare
-    serviceAccount: equus-application-prod-account
+    serviceAccount: repo-convert-prod-account
     audiences:
       - vault
 ---
@@ -136,33 +135,79 @@ spec:
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultDynamicSecret
 metadata:
-  name: equus-application-prod-secret
-  namespace: entry-prod
+  name: repo-convert-prod-secret
+  namespace: repo-prod
 spec:
   mount: xquare-kv
-  path: equus-application-prod
+  path: repo-convert-prod
   destination:
-    name: equus-application-prod
+    name: repo-convert-prod
     create: true
-  vaultAuthRef: entry-prod/equus-application-prod-auth
+  vaultAuthRef: repo-prod/repo-convert-prod-auth
   rolloutRestartTargets:
     - kind: Deployment
-      name: equus-application-prod
+      name: repo-convert-prod
 ---
 # Source: applications/templates/vpa.yaml
 apiVersion: autoscaling.k8s.io/v1
 kind: VerticalPodAutoscaler
 metadata:
-  name: equus-application-prod-vpa
-  namespace: entry-prod
+  name: repo-convert-prod-vpa
+  namespace: repo-prod
 spec:
   targetRef:
     apiVersion: "apps/v1"
     kind:       Deployment
-    name:       equus-application-prod
+    name:       repo-convert-prod
   updatePolicy:
     updateMode: "Auto"
   resourcePolicy:
     containerPolicies:
       - containerName: "*"
         controlledResources: [ "memory" ]
+---
+# Source: applications/templates/virtual-service.yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: repo-convert-prod-domain-ingress
+  labels:
+    app.kubernetes.io/instance: xquare-ingress
+  namespace: repo-prod
+spec:
+  gateways:
+    - istio-system/xquare-ingressgateway
+  hosts:
+    - repo-conv.xquare.app
+  http:
+    - name: repo-convert
+      route:
+        - destination:
+            host: 'repo-convert-prod.repo-prod.svc.cluster.local'
+            port:
+              number: 3005
+      corsPolicy:
+        allowOrigins:
+          - regex: ".*"
+        allowMethods:
+          - POST
+          - GET
+          - PUT
+          - PATCH
+          - DELETE
+          - OPTIONS
+        allowCredentials: true
+        allowHeaders:
+          - content-type
+          - authorization
+          - accept
+          - accept-encoding
+          - Refresh-Token
+          - X-Not-Using-Xquare-Auth
+          - Oauth-Token
+          - oa-token
+          - Request-User-Id
+          - Request-User-Role
+          - X-Refresh-Token
+          - x-identifier
+        maxAge: "24h"
