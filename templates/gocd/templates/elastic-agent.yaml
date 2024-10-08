@@ -15,6 +15,10 @@ spec:
       imagePullPolicy: IfNotPresent
       securityContext:
         privileged: true
+      resources:
+        requests:
+          cpu: 2000m
+          memory: 7G
       env:
         - name: AWS_ACCESS_KEY_ID
           valueFrom:

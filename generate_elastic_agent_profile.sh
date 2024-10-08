@@ -33,14 +33,23 @@ for ENV in "${ENVIRONMENTS[@]}"; do
         echo $BUILD_PROFILE_ID
 
         # Get the pod template and escape special characters
-        POD_TEMPLATE=$(./split_yaml_by_source.sh "$(helm template "$SERVICE" "$CHART_PATH" -f "$VALUES_FILE")" gocd/templates/elastic-agent.yaml | sed ':a;N;$!ba;s/\n/\\n/g' | sed 's/"/\\"/g')
+        POD_TEMPLATE=$(./split_yaml_by_source.sh "$(helm template "$SERVICE" "$CHART_PATH" -f "$VALUES_FILE")" gocd/templates/elastic-agent.yaml | awk '{printf "%s\\n", $0}' | sed 's/"/\\"/g')
 
-        curl 'https://gocd.xquare.app/go/api/elastic/profiles' \
+        # Fetch the current ETag value
+        ETAG=$(curl -s -I -X GET "https://gocd.xquare.app/go/api/elastic/profiles/$BUILD_PROFILE_ID" \
+               -H 'Accept: application/vnd.go.cd.v2+json' | grep etag | awk '{print $2}' | tr -d '\r')
+
+        echo "Fetched ETag: $ETAG"
+
+        # Update the elastic agent profile using the fetched ETag
+        curl "https://gocd.xquare.app/go/api/elastic/profiles/$BUILD_PROFILE_ID" \
              -H 'Accept: application/vnd.go.cd.v2+json' \
              -H 'Content-Type: application/json' \
-             -X POST -d "{
+             -H "If-Match: $ETAG" \
+             -X PUT -d "{
                \"id\": \"$BUILD_PROFILE_ID\",
                \"cluster_profile_id\": \"k8-cluster-profile\",
+               \"plugin_id\": \"cd.go.contrib.elasticagent.kubernetes\",
                \"properties\": [
                  {
                    \"key\": \"Image\"
