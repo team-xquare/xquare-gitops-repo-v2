@@ -16,8 +16,6 @@ pipelines:
           jobs:
             build:
               elastic_profile_id: {{ .Values.name }}-{{ .Values.environment }}-agent-profile
-              resources:
-                - build
               artifacts:
                 - build:
                     source: build_result.env
