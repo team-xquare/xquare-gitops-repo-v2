@@ -23,7 +23,7 @@ else
 fi
 
 # Docker 이미지를 빌드
-docker build -t "${IMAGE_REGISTRY}/${REPO_NAME}:${IMAGE_TAG}" .
+docker buildx build -t "${IMAGE_REGISTRY}/${REPO_NAME}:${IMAGE_TAG}" .
 
 # AWS ECR에 로그인
 aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${IMAGE_REGISTRY}
