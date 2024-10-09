@@ -1,4 +1,4 @@
-FROM openjdk:{{ jdk_version }}-jdk-slim as build
+FROM openjdk:{{ jdk_version }}-jdk-slim AS build
 ENV TZ=Asia/Seoul
 
 COPY . .
