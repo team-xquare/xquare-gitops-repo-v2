@@ -1,11 +1,15 @@
 {%- if builder == "node" %}
-FROM node:{{ node_version }}
+FROM node:{{ node_version }} as build
 
 {% for command in build_commands %}
 RUN {{ command }}
 {% endfor %}
 
 COPY . .
+
+FROM node:{{ node_version }}
+
+COPY --from=build . .
 
 EXPOSE {{ port }}
 

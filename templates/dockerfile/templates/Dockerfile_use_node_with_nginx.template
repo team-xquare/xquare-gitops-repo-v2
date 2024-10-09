@@ -1,6 +1,6 @@
 {% if builder == "node_with_nginx" %}
 FROM node:{{ node_version }}-alpine AS builder
-  
+
 RUN apk add --no-cache libc6-compat
 
 {% for command in build_commands %}
@@ -11,9 +11,9 @@ COPY . ./
 {% for command in commands %}
 RUN {{ command }}
 {% endfor %}
-  
+
 FROM nginx:alpine AS runner
-  
+
 RUN echo "\
 server {\
 listen {{ port }};\
@@ -29,4 +29,4 @@ COPY --from=builder /{{ outputDir }} /usr/share/nginx/html
 EXPOSE {{ port }}
 
 CMD ["nginx", "-g", "daemon off;"]
-  {% endif %}
+{% endif %}
