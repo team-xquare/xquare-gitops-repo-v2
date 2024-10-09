@@ -1,4 +1,4 @@
-FROM gradle:8-jdk17-alpine AS build
+FROM gradle:8-jdk17 AS build
 ENV TZ=Asia/Seoul
 
 COPY . .
