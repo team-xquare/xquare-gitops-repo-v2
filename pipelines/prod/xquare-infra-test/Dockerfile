@@ -1,6 +1,6 @@
 
 FROM node:22.5.1-alpine AS builder
-  
+
 RUN apk add --no-cache libc6-compat
 
 
@@ -9,9 +9,9 @@ RUN yarn install && yarn build
 COPY . ./
 
 
-  
+
 FROM nginx:alpine AS runner
-  
+
 RUN echo "\
 server {\
 listen 3000;\
@@ -27,4 +27,4 @@ COPY --from=builder / /usr/share/nginx/html
 EXPOSE 3000
 
 CMD ["nginx", "-g", "daemon off;"]
-  
+
