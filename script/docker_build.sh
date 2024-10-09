@@ -10,8 +10,6 @@ RANDOM_TAG=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 8 | head -n 1)
 IMAGE_TAG="${ENVIRONMENT}-${RANDOM_TAG}"
 IMAGE_REGISTRY="786584124104.dkr.ecr.ap-northeast-2.amazonaws.com"
 
-ls
-
 # ECR 저장소가 존재하는지 확인
 REPO_EXISTS=$(aws ecr describe-repositories --repository-names "${REPO_NAME}" --region ap-northeast-2 2>&1 || echo "RepositoryNotFoundException")
 
@@ -24,6 +22,7 @@ fi
 
 echo "Test No Cache"
 # Docker 이미지를 빌드
+ls
 docker buildx build --no-cache -t "${IMAGE_REGISTRY}/${REPO_NAME}:${IMAGE_TAG}" .
 
 # AWS ECR에 로그인
