@@ -1,11 +1,11 @@
 
 FROM node:22.5.1 as build
 
+COPY . .
+
 
 RUN yarn build
 
-
-COPY . .
 
 FROM node:22.5.1
 
