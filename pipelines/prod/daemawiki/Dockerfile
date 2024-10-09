@@ -1,10 +1,10 @@
-FROM openjdk:21-jdk-slim AS build
+FROM gradle:21-jdk AS build
 ENV TZ=Asia/Seoul
 
 COPY . .
 
 
-RUN --mount=type=cache,target=/root/.gradle \
+RUN --mount=type=cache,target=/home/gradle/.gradle \
     ./gradlew build -x test --build-cache
 
 
