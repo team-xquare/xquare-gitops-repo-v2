@@ -2,7 +2,10 @@
 FROM node:22.5.1-alpine AS builder
   
 RUN apk add --no-cache libc6-compat
-  
+
+
+RUN yarn install && yarn build
+
 COPY . ./
 
 
