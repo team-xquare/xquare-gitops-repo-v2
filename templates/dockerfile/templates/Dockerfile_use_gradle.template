@@ -1,6 +1,8 @@
 FROM openjdk:{{ jdk_version }}-jdk-slim as build
 ENV TZ=Asia/Seoul
 
+COPY . .
+
 {% for command in build_commands %}
 RUN --mount=type=cache,target=/root/.gradle \
     {{ command }}
