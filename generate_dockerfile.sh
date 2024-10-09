@@ -29,7 +29,6 @@ update_dockerfile() {
 
     case "$builder" in
         "gradle")
-            jq '.build_commands[0] += " --build-cache"' $template_json_dir > temp.json && mv temp.json $template_json_dir
             template="$GRADLE_TEMPLATE"
             ;;
         "node")
