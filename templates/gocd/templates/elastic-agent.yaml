@@ -11,7 +11,7 @@ spec:
     fsGroupChangePolicy: "OnRootMismatch"
   containers:
     - name: gocd-build-agent
-      image: gocd/gocd-agent-docker-dind:v24.3.0
+      image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/gocd-agent-docker-dind-with-awscli:latest
       imagePullPolicy: IfNotPresent
       securityContext:
         privileged: true
