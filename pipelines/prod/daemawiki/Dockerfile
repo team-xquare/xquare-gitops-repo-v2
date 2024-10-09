@@ -1,4 +1,4 @@
-FROM gradle:21-jdk AS build
+FROM gradle:8-jdk21-alpine AS build
 ENV TZ=Asia/Seoul
 
 COPY . .
