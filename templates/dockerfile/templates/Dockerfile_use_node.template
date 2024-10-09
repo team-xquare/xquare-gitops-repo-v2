@@ -1,6 +1,10 @@
 {%- if builder == "node" %}
 FROM node:{{ node_version }}
 
+{% for command in build_commands %}
+RUN {{ command }}
+{% endfor %}
+
 COPY . .
 
 EXPOSE {{ port }}

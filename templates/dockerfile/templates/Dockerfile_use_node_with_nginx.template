@@ -2,7 +2,10 @@
 FROM node:{{ node_version }}-alpine AS builder
   
 RUN apk add --no-cache libc6-compat
-  
+
+{% for command in build_commands %}
+RUN {{ command }}
+{% endfor %}
 COPY . ./
 
 {% for command in commands %}
