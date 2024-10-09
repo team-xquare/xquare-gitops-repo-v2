@@ -1,10 +1,10 @@
-FROM openjdk:{{ jdk_version }}-jdk-slim AS build
+FROM gradle:{{ jdk_version }}-jdk AS build
 ENV TZ=Asia/Seoul
 
 COPY . .
 
 {% for command in build_commands %}
-RUN --mount=type=cache,target=/root/.gradle \
+RUN --mount=type=cache,target=/home/gradle/.gradle \
     {{ command }}
 {% endfor %}
 
