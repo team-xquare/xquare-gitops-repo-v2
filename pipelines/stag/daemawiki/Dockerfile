@@ -4,11 +4,11 @@ ENV TZ=Asia/Seoul
 COPY . .
 
 
-RUN --mount=type=cache,target=/home/gradle/.gradle \
+RUN --mount=type=cache,target=/root/.gradle \
     ./gradlew build -x test --build-cache
 
 
-COPY /build/libs/*.jar app.jar
+COPY /build/libs/*.jar /app.jar
 
 FROM openjdk:21-jdk-slim
 ENV TZ=Asia/Seoul

@@ -4,11 +4,11 @@ ENV TZ=Asia/Seoul
 COPY . .
 
 
-RUN --mount=type=cache,target=/home/gradle/.gradle \
+RUN --mount=type=cache,target=/root/.gradle \
     ./gradlew build -x test
 
 
-COPY /GE/build/libs/GE-0.0.1-SNAPSHOT.jar app.jar
+COPY /GE/build/libs/GE-0.0.1-SNAPSHOT.jar /app.jar
 
 FROM openjdk:17-jdk-slim
 ENV TZ=Asia/Seoul
