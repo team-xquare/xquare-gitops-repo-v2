@@ -1,11 +1,11 @@
 
 FROM node:22.5.1 as build
 
+COPY . .
+
 
 RUN npm i
 
-
-COPY . .
 
 FROM node:22.5.1
 

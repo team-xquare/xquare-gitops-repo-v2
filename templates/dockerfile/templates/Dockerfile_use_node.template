@@ -1,11 +1,11 @@
 {%- if builder == "node" %}
 FROM node:{{ node_version }} as build
 
+COPY . .
+
 {% for command in build_commands %}
 RUN {{ command }}
 {% endfor %}
-
-COPY . .
 
 FROM node:{{ node_version }}
 
