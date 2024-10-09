@@ -1,6 +1,8 @@
 FROM openjdk:17-jdk-slim as build
 ENV TZ=Asia/Seoul
 
+COPY . .
+
 
 RUN --mount=type=cache,target=/root/.gradle \
     ./gradlew build -x test
