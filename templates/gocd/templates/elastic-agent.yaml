@@ -34,10 +34,10 @@ spec:
         - name: aws-credentials
           mountPath: /etc/config/aws/
           readOnly: true
-{{/*        - name: docker-volume*/}}
-{{/*          mountPath: /var/lib/docker*/}}
-{{/*        - name: gradle-volume*/}}
-{{/*          mountPath: /root/.gradle*/}}
+        - name: docker-volume
+          mountPath: /var/lib/docker
+        - name: gradle-volume
+          mountPath: /root/.gradle
   volumes:
     - name: aws-credentials
       secret:
