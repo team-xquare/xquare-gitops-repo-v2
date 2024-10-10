@@ -20,10 +20,8 @@ else
   echo "저장소 ${REPO_NAME}가 이미 존재합니다."
 fi
 
-echo "Test No Cache"
-# Docker 이미지를 빌드
 ls
-docker buildx build --no-cache -t "${IMAGE_REGISTRY}/${REPO_NAME}:${IMAGE_TAG}" .
+docker buildx build -t "${IMAGE_REGISTRY}/${REPO_NAME}:${IMAGE_TAG}" .
 
 # AWS ECR에 로그인
 aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${IMAGE_REGISTRY}
