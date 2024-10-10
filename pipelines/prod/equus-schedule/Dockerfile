@@ -1,6 +1,8 @@
 FROM gradle:8-jdk17 AS build
 ENV TZ=Asia/Seoul
 
+WORKDIR /app
+
 COPY . .
 
 
@@ -11,6 +13,6 @@ RUN --mount=type=cache,target=/root/.gradle \
 FROM openjdk:17-jdk-slim
 ENV TZ=Asia/Seoul
 
-COPY --from=build /build/libs/Equus-Schedule-0.0.0.jar /app.jar
+COPY --from=build /app//build/libs/Equus-Schedule-0.0.0.jar /app.jar
 
 ENTRYPOINT ["java", "-jar", "/app.jar"]
