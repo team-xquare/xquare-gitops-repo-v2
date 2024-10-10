@@ -13,6 +13,6 @@ RUN --mount=type=cache,target=/root/.gradle \
 FROM openjdk:17-jdk-slim
 ENV TZ=Asia/Seoul
 
-COPY --from=build /app/application-infrastructure/build/libs/application-infrastructure-0.0.1-SNAPSHOT.jar /app.jar
+COPY --from=build /app/build/libs/Equus-Api-Gateway-0.0.1-SNAPSHOT.jar /app.jar
 
 ENTRYPOINT ["java", "-jar", "/app.jar"]
