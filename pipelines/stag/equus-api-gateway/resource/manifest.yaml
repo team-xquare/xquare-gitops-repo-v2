@@ -96,7 +96,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: equus-api-gateway-stag
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/equus-api-gateway-stag:stag-ne74lm6v
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/equus-api-gateway-stag:stag-1hc2ck67
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
