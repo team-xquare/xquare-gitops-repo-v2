@@ -36,8 +36,6 @@ spec:
           readOnly: true
         - name: docker-volume
           mountPath: /var/lib/docker
-        - name: gradle-volume
-          mountPath: /root/.gradle
   volumes:
     - name: aws-credentials
       secret:
@@ -46,9 +44,6 @@ spec:
     - name: docker-volume
       persistentVolumeClaim:
         claimName: {{ .Values.name }}-{{ .Values.environment }}-docker-pvc
-    - name: gradle-volume
-      persistentVolumeClaim:
-        claimName: {{ .Values.name }}-{{ .Values.environment }}-application-pvc
   tolerations:
     - key: "xquare/server"
       operator: "Equal"
