@@ -8,20 +8,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5G
-  storageClassName: build-agent-storage-class
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  namespace: gocd
-  name: {{ .Values.name }}-{{ .Values.environment }}-application-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5G
+      storage: 10G
   storageClassName: build-agent-storage-class
 ---
 apiVersion: storage.k8s.io/v1
