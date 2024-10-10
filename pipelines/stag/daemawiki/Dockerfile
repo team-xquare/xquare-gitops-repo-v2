@@ -13,6 +13,6 @@ RUN --mount=type=cache,target=/root/.gradle \
 FROM openjdk:21-jdk-slim
 ENV TZ=Asia/Seoul
 
-COPY --from=build /app//build/libs/*.jar /app.jar
+COPY --from=build /app/build/libs/*.jar /app.jar
 
 ENTRYPOINT ["java", "-jar", "/app.jar"]
