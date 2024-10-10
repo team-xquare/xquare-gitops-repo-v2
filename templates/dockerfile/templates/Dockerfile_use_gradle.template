@@ -1,6 +1,8 @@
 FROM gradle:8-jdk{{ jdk_version }} AS build
 ENV TZ=Asia/Seoul
 
+WORKDIR /app
+
 COPY . .
 
 {% for command in build_commands %}
@@ -11,6 +13,6 @@ RUN --mount=type=cache,target=/root/.gradle \
 FROM openjdk:{{ jdk_version }}-jdk-slim
 ENV TZ=Asia/Seoul
 
-COPY --from=build {{ output_dir }} /app.jar
+COPY --from=build /app/{{ output_dir }} /app.jar
 
 ENTRYPOINT ["java", "-jar", "/app.jar"]
