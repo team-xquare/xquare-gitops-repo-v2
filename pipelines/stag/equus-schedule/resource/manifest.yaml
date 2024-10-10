@@ -96,7 +96,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: equus-schedule-stag
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/equus-schedule-stag:stag-m7lg6yjf
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/equus-schedule-stag:stag-i272xnqg
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
