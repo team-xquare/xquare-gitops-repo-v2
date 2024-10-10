@@ -8,11 +8,9 @@ RUN --mount=type=cache,target=/root/.gradle \
     {{ command }}
 {% endfor %}
 
-COPY {{ output_dir }} /app.jar
-
 FROM openjdk:{{ jdk_version }}-jdk-slim
 ENV TZ=Asia/Seoul
 
-COPY --from=build /app.jar /app.jar
+COPY --from=build {{ output_dir }} /app.jar
 
 ENTRYPOINT ["java", "-jar", "/app.jar"]
