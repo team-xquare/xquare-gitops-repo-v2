@@ -4,7 +4,7 @@ FROM node:22.5.1 AS build
 COPY . .
 
 
-RUN npm run build
+RUN npm install
 
 
 FROM node:22.5.1
@@ -12,4 +12,4 @@ FROM node:22.5.1
 COPY --from=build . .
 
 EXPOSE 3000
-CMD ["npm", "run", "start"]
+CMD ["yarn", "start:prod"]
