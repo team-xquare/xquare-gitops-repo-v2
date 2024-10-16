@@ -1,4 +1,4 @@
-FROM gradle:8-jdk21 AS build
+FROM amazoncorretto:21 AS build
 ENV TZ=Asia/Seoul
 
 WORKDIR /app
@@ -10,7 +10,8 @@ RUN --mount=type=cache,target=/root/.gradle \
     ./gradlew build -x test --build-cache
 
 
-FROM openjdk:21-jdk-slim
+FROM amazoncorretto:21
+
 ENV TZ=Asia/Seoul
 
 COPY --from=build /app/build/libs/*.jar /app.jar
