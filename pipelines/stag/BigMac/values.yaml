@@ -1,0 +1,10 @@
+club: repo
+name: BigMac
+organization: DSM-Repo
+repository: BigMac
+branch: BigMac
+environment: stag
+containerPort: 8081
+domain: repo.convert.stag.xquare.app
+language: java
+critical_service: false
