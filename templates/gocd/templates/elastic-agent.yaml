@@ -45,7 +45,7 @@ spec:
       persistentVolumeClaim:
         claimName: {{ .Values.name }}-{{ .Values.environment }}-docker-pvc
   tolerations:
-    - key: "xquare/server"
+    - key: "xquare/ci-server"
       operator: "Equal"
       value: "true"
       effect: "NoSchedule"
