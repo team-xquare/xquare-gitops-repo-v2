@@ -3,56 +3,56 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  namespace: entry-prod
-  name: equus-feed-prod
+  namespace: eeats-stag
+  name: eeats-stag
 spec:
   maxUnavailable: 0
   selector:
     matchLabels:
-      app.kubernetes.io/name: equus-feed-prod
+      app.kubernetes.io/name: eeats-stag
 ---
 # Source: applications/templates/vaultsecret.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: equus-feed-prod-account
-  namespace: entry-prod
+  name: eeats-stag-account
+  namespace: eeats-stag
 ---
 # Source: applications/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: entry-prod
-  name: equus-feed-prod
+  namespace: eeats-stag
+  name: eeats-stag
   labels:
-    app: equus-feed-prod
-    project: equus-feed
-    environment: prod
+    app: eeats-stag
+    project: eeats
+    environment: stag
 spec:
   type: ClusterIP
   selector:
-    app: equus-feed-prod
+    app: eeats-stag
   ports:
     - name: http
       port: 80
-      targetPort: 8080
+      targetPort: 3000
       protocol: TCP
     - name: port
-      port: 8080
-      targetPort: 8080
+      port: 3000
+      targetPort: 3000
       protocol: TCP
 ---
 # Source: applications/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: entry-prod
-  name: equus-feed-prod
+  namespace: eeats-stag
+  name: eeats-stag
   labels:
-    app: equus-feed-prod
-    project: equus-feed
+    app: eeats-stag
+    project: eeats
     test: test
-    environment: prod
+    environment: stag
 spec:
   replicas: 1
   revisionHistoryLimit: 0
@@ -63,19 +63,18 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app: equus-feed-prod
+      app: eeats-stag
   template:
     metadata:      
       annotations:
         sidecar.istio.io/rewriteAppHTTPProbers: "false"
         sidecar.istio.io/proxyCPU: "5m"
         sidecar.istio.io/proxyMemory: "128Mi"
-        instrumentation.opentelemetry.io/inject-java: "true"
       labels:
-        app: equus-feed-prod
-        project: equus-feed
+        app: eeats-stag
+        project: eeats
     spec:
-      serviceAccountName: equus-feed-prod-account
+      serviceAccountName: eeats-stag-account
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -84,7 +83,7 @@ spec:
                   - key: app
                     operator: In
                     values:
-                      - equus-feed-prod
+                      - eeats-stag
               topologyKey: "kubernetes.io/hostname"
       nodeSelector:
         Karpenter: enabled
@@ -95,14 +94,14 @@ spec:
           value: "true"
       terminationGracePeriodSeconds: 120
       containers:
-        - name: equus-feed-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/equus-feed-prod:prod-wegz0sm1
+        - name: eeats-stag
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/eeats-stag:stag-u081f4mm
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8080
+            - containerPort: 3000
           envFrom:
           - secretRef:
-              name: equus-feed-prod
+              name: eeats-stag
           resources:
             requests:
               memory: "500Mi"
@@ -112,7 +111,7 @@ spec:
               memory: "2Gi"
           readinessProbe:
             tcpSocket:
-              port: 8080
+              port: 3000
             initialDelaySeconds: 20
             periodSeconds: 10
             successThreshold: 3
@@ -121,14 +120,14 @@ spec:
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultAuth
 metadata:
-  name: equus-feed-prod-auth
-  namespace: entry-prod
+  name: eeats-stag-auth
+  namespace: eeats-stag
 spec:
   method: kubernetes
   mount: kubernetes
   kubernetes:
     role: xquare
-    serviceAccount: equus-feed-prod-account
+    serviceAccount: eeats-stag-account
     audiences:
       - vault
 ---
@@ -136,33 +135,79 @@ spec:
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultDynamicSecret
 metadata:
-  name: equus-feed-prod-secret
-  namespace: entry-prod
+  name: eeats-stag-secret
+  namespace: eeats-stag
 spec:
   mount: xquare-kv
-  path: equus-feed-prod
+  path: eeats-stag
   destination:
-    name: equus-feed-prod
+    name: eeats-stag
     create: true
-  vaultAuthRef: entry-prod/equus-feed-prod-auth
+  vaultAuthRef: eeats-stag/eeats-stag-auth
   rolloutRestartTargets:
     - kind: Deployment
-      name: equus-feed-prod
+      name: eeats-stag
 ---
 # Source: applications/templates/vpa.yaml
 apiVersion: autoscaling.k8s.io/v1
 kind: VerticalPodAutoscaler
 metadata:
-  name: equus-feed-prod-vpa
-  namespace: entry-prod
+  name: eeats-stag-vpa
+  namespace: eeats-stag
 spec:
   targetRef:
     apiVersion: "apps/v1"
     kind:       Deployment
-    name:       equus-feed-prod
+    name:       eeats-stag
   updatePolicy:
     updateMode: "Auto"
   resourcePolicy:
     containerPolicies:
       - containerName: "*"
         controlledResources: [ "memory" ]
+---
+# Source: applications/templates/virtual-service.yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: eeats-stag-domain-ingress
+  labels:
+    app.kubernetes.io/instance: xquare-ingress
+  namespace: eeats-stag
+spec:
+  gateways:
+    - istio-system/xquare-ingressgateway
+  hosts:
+    - eeats-stag.xquare.app
+  http:
+    - name: eeats
+      route:
+        - destination:
+            host: 'eeats-stag.eeats-stag.svc.cluster.local'
+            port:
+              number: 3000
+      corsPolicy:
+        allowOrigins:
+          - regex: ".*"
+        allowMethods:
+          - POST
+          - GET
+          - PUT
+          - PATCH
+          - DELETE
+          - OPTIONS
+        allowCredentials: true
+        allowHeaders:
+          - content-type
+          - authorization
+          - accept
+          - accept-encoding
+          - Refresh-Token
+          - X-Not-Using-Xquare-Auth
+          - Oauth-Token
+          - oa-token
+          - Request-User-Id
+          - Request-User-Role
+          - X-Refresh-Token
+          - x-identifier
+        maxAge: "24h"

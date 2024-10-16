@@ -96,7 +96,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: equus-feed-stag
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/equus-feed-stag:stag-s2dm64gt
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/equus-feed-stag:stag-ebvnetgb
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
