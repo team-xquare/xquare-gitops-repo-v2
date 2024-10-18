@@ -28,10 +28,11 @@ pipelines:
                     arguments:
                       - -c
                       - |
+                        curl -o template.json https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/pipelines/stag/growingbegger/template.json
                         curl -o docker_build.sh https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/script/docker_build.sh
                         curl -o Dockerfile https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/pipelines/stag/growingbegger/Dockerfile
                         chmod +x docker_build.sh
-                        ./docker_build.sh stag growingbegger
+                        ./docker_build.sh stag growingbegger template.json
       - deploy:
           jobs:
             deploy:

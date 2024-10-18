@@ -28,10 +28,11 @@ pipelines:
                     arguments:
                       - -c
                       - |
+                        curl -o template.json https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/pipelines/stag/equus-status/template.json
                         curl -o docker_build.sh https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/script/docker_build.sh
                         curl -o Dockerfile https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/pipelines/stag/equus-status/Dockerfile
                         chmod +x docker_build.sh
-                        ./docker_build.sh stag equus-status
+                        ./docker_build.sh stag equus-status template.json
       - deploy:
           jobs:
             deploy:
