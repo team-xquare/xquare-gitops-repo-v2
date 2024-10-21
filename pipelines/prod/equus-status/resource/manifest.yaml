@@ -96,7 +96,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: equus-status-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/equus-status-prod:prod-r0nf4ac7
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/equus-status-prod:prod-ylo3yu3z
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
