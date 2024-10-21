@@ -6,8 +6,6 @@ ENVIRONMENT=$1
 SERVICE_NAME=$2
 TEMPLATE_JSON=$3
 
-sudo apt-get install jq
-
 BUILD_DIR=$(echo $TEMPLATE_JSON | jq -r '.build_dir // "/"')
 
 cd $BUILD_DIR
