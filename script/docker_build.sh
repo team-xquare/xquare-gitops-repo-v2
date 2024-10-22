@@ -11,7 +11,7 @@ echo "$TEMPLATE_JSON"
 BUILD_DIR=$(echo "$TEMPLATE_JSON" | jq -r '.build_dir // "/"')
 
 if [[ "$BUILD_DIR" == /* ]]; then
-    BUILD_DIR=$(realpath --relative-to="$PWD" "$BUILD_DIR")
+    BUILD_DIR="./${BUILD_DIR#/}"
 fi
 
 cd "$BUILD_DIR" || { echo "디렉토리 이동 실패: $BUILD_DIR"; exit 1; }
