@@ -32,7 +32,7 @@ pipelines:
                         curl -o docker_build.sh https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/script/docker_build.sh
                         curl -o Dockerfile https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/pipelines/prod/repo-convert/Dockerfile
                         chmod +x docker_build.sh
-                        ./docker_build.sh prod repo-convert template.json
+                        ./docker_build.sh prod repo-convert (echo $template.json)
       - deploy:
           jobs:
             deploy:
