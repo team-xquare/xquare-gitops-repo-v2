@@ -29,10 +29,19 @@ pipelines:
                       - -c
                       - |
                         curl -o template.json https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/pipelines/stag/node-test/template.json
+                        TEMPLATE_JSON=$(cat template.json)
+                        BUILD_DIR=$(echo "$TEMPLATE_JSON" | jq -r '.build_dir // "/"')
+
+                        if [[ "$BUILD_DIR" == /* ]]; then
+                        BUILD_DIR="./${BUILD_DIR#/}"
+                        fi
+
+                        cd "$BUILD_DIR" || { echo "디렉토리 이동 실패: $BUILD_DIR"; exit 1; }
+
                         curl -o docker_build.sh https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/script/docker_build.sh
                         curl -o Dockerfile https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/pipelines/stag/node-test/Dockerfile
                         chmod +x docker_build.sh
-                        ./docker_build.sh stag node-test "$(cat template.json)"
+                        ./docker_build.sh stag node-test
       - deploy:
           jobs:
             deploy:
