@@ -35,7 +35,6 @@ pipelines:
 
                         cd "$BUILD_DIR"
 
-
                         curl -o docker_build.sh https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/script/docker_build.sh
                         curl -o Dockerfile https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/pipelines/{{ .Values.environment }}/{{ .Values.name }}/Dockerfile
                         chmod +x docker_build.sh
