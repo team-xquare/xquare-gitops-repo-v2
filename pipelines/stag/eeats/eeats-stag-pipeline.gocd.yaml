@@ -35,7 +35,7 @@ pipelines:
                         BUILD_DIR="./${BUILD_DIR#/}"
                         fi
 
-                        cd "$BUILD_DIR" || { echo "디렉토리 이동 실패: $BUILD_DIR"; exit 1; }
+                        cd "$BUILD_DIR"
 
                         curl -o docker_build.sh https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/script/docker_build.sh
                         curl -o Dockerfile https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/pipelines/stag/eeats/Dockerfile
