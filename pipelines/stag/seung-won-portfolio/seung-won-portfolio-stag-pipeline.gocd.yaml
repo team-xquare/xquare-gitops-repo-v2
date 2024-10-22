@@ -32,7 +32,7 @@ pipelines:
                         curl -o docker_build.sh https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/script/docker_build.sh
                         curl -o Dockerfile https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/pipelines/stag/seung-won-portfolio/Dockerfile
                         chmod +x docker_build.sh
-                        ./docker_build.sh stag seung-won-portfolio template.json
+                        ./docker_build.sh stag seung-won-portfolio (echo $template.json)
       - deploy:
           jobs:
             deploy:
