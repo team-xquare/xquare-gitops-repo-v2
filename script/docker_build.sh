@@ -11,10 +11,11 @@ echo "$TEMPLATE_JSON"
 BUILD_DIR=$(echo "$TEMPLATE_JSON" | jq -r '.build_dir // "/"')
 
 if [[ "$BUILD_DIR" == /* ]]; then
-  BUILD_DIR=$(echo "$BUILD_DIR" | sed "s|$(pwd)/||")
+    BUILD_DIR=$(realpath --relative-to="$PWD" "$BUILD_DIR")
 fi
 
 cd "$BUILD_DIR" || { echo "디렉토리 이동 실패: $BUILD_DIR"; exit 1; }
+
 
 REPO_NAME=${SERVICE_NAME}-${ENVIRONMENT}
 RANDOM_TAG=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 8 | head -n 1)
