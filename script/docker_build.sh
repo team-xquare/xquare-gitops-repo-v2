@@ -18,6 +18,8 @@ if [[ "$BUILD_DIR" != "." && "$BUILD_DIR" != "./" ]]; then
     cp ./Dockerfile ${BUILD_DIR}
 fi
 
+ORIGINAL_DIR=$(pwd)
+
 cd "$BUILD_DIR" || { echo "디렉토리 이동 실패: $BUILD_DIR"; exit 1; }
 
 REPO_NAME=${SERVICE_NAME}-${ENVIRONMENT}
@@ -46,6 +48,8 @@ aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS
 
 # Docker 이미지를 ECR 저장소에 푸시
 docker push "${IMAGE_REGISTRY}/${REPO_NAME}:${IMAGE_TAG}"
+
+cd "$ORIGINAL_DIR" || { echo "디렉토리 이동 실패: $ORIGINAL_DIR"; exit 1; }
 
 # 환경 변수 파일에 저장소 URI 저장
 VARIABLE_NAME=$(echo ${SERVICE_NAME}_REPOSITORY | tr '-' '_')
