@@ -32,8 +32,7 @@ fi
 
 ls
 
-# 3GB메모리는 남겨놓기
-docker builder prune -f --keep-storage 3GB
+docker system prune -f
 
 docker buildx build -t "${IMAGE_REGISTRY}/${REPO_NAME}:${IMAGE_TAG}" .
 
