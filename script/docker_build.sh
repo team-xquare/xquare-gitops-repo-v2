@@ -14,7 +14,10 @@ if [[ "$BUILD_DIR" == /* ]]; then
     BUILD_DIR="./${BUILD_DIR#/}"
 fi
 
-cp ./Dockerfile ${BUILD_DIR}
+if [[ "$BUILD_DIR" != "." && "$BUILD_DIR" != "./" ]]; then
+    cp ./Dockerfile ${BUILD_DIR}
+fi
+
 cd "$BUILD_DIR" || { echo "디렉토리 이동 실패: $BUILD_DIR"; exit 1; }
 
 REPO_NAME=${SERVICE_NAME}-${ENVIRONMENT}
