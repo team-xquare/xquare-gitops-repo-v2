@@ -9,7 +9,7 @@ TEMPLATE_JSON=$3
 BUILD_DIR=$(echo "$TEMPLATE_JSON" | jq -r '.build_dir // "/"')
 
 if [[ "$BUILD_DIR" == /* ]]; then
-    BUILD_DIR="./${BUILD_DIR#/}"
+    BUILD_DIR=".${BUILD_DIR#/}"
 fi
 
 cp ${BUILD_DIR}/Dockerfile .
