@@ -4,6 +4,16 @@ set -e
 
 ENVIRONMENT=$1
 SERVICE_NAME=$2
+TEMPLATE_JSON=$3
+
+BUILD_DIR=$(jq -r '.build_dir' ${TEMPLATE_JSON})
+
+if [[ ${BUILD_DIR} == /* ]]; then
+  BUILD_DIR="./${BUILD_DIR}"
+fi
+
+cp ${BUILD_DIR}/Dockerfile .
+cd ${BUILD_DIR}
 
 REPO_NAME=${SERVICE_NAME}-${ENVIRONMENT}
 RANDOM_TAG=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 8 | head -n 1)
