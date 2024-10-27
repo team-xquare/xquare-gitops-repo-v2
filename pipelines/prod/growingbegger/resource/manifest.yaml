@@ -96,7 +96,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: growingbegger-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/growingbegger-prod:prod-6k5sutxg
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/growingbegger-prod:prod-2kce95ni
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
