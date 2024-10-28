@@ -1,0 +1,1 @@
+{"jdk_version":21,"output_dir":"/helper-infrastructure/build/libs/helper-infrastructure-0.0.1-SNAPSHOT.jar","builder":"gradle","build_dir":"/helper-infrastructure","build_commands":["./gradlew bulid -x test"]}
