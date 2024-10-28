@@ -1,4 +1,4 @@
-FROM amazoncorretto:21 AS build
+FROM amazoncorretto:17 AS build
 ENV TZ=Asia/Seoul
 
 WORKDIR /app
@@ -10,7 +10,7 @@ RUN --mount=type=cache,target=/root/.gradle \
     ./gradlew bulid -x test
 
 
-FROM amazoncorretto:21
+FROM amazoncorretto:17
 
 ENV TZ=Asia/Seoul
 
