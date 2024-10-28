@@ -22,6 +22,9 @@ ORIGINAL_DIR=$(pwd)
 
 cd "$BUILD_DIR" || { echo "디렉토리 이동 실패: $BUILD_DIR"; exit 1; }
 
+echo "디렉토리 : "
+pwd
+
 REPO_NAME=${SERVICE_NAME}-${ENVIRONMENT}
 RANDOM_TAG=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 8 | head -n 1)
 IMAGE_TAG="${ENVIRONMENT}-${RANDOM_TAG}"
