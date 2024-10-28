@@ -1,0 +1,10 @@
+club: helper
+name: helper
+organization: Team-LoopCat
+repository: Helper_Backend
+branch: develop
+environment: stag
+containerPort: 8080
+domain: helper-stag.xquare.app
+language: java
+critical_service: false
