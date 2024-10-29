@@ -1,0 +1,10 @@
+club: swing
+name: swingbe
+organization: SwingRidePlus
+repository: Backend
+branch: develop
+environment: prod
+containerPort: 8080
+domain: swing-be.xquare.app
+language: java
+critical_service: false
