@@ -42,6 +42,12 @@ fi
 
 ls
 
+BUILDER_=$(echo "$TEMPLATE_JSON" | jq -r '.builder')
+
+if [[ $BUILDER == "gradle "]]; then
+    chmod +x gradlew
+fi
+
 docker system prune -f
 
 docker buildx build -t "${IMAGE_REGISTRY}/${REPO_NAME}:${IMAGE_TAG}" .
