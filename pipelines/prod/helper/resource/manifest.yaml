@@ -96,7 +96,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: helper-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/helper-prod:prod-2djg37jq
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/helper-prod:prod-ch1ffiy8
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
