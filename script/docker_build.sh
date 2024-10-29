@@ -44,7 +44,7 @@ ls
 
 BUILDER_=$(echo "$TEMPLATE_JSON" | jq -r '.builder')
 
-if [[ $BUILDER == "gradle" ]]; then
+if [[ "$BUILDER" == "gradle" ]]; then
     chmod +x gradlew
 fi
 
