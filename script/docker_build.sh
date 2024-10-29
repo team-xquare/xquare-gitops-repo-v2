@@ -42,9 +42,9 @@ fi
 
 ls
 
-BUILDER_=$(echo "$TEMPLATE_JSON" | jq -r '.builder // "/"')
+BUILDER_=$(cat "$TEMPLATE_JSON" | jq -r '.builder // "/"')
 
-echo "builder: $BUILDER"
+echo "builder  : $BUILDER"
 
 if [[ "$BUILDER" == "gradle" ]]
 then
