@@ -1,0 +1,10 @@
+club: swing
+name: swingbe
+organization: SwingRidePlus
+repository: Backend
+branch: main
+environment: stag
+containerPort: 8080
+domain: swing-be-stag.xquare.app
+language: java
+critical_service: false
