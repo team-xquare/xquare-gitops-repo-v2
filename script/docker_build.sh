@@ -51,6 +51,8 @@ then
     chmod +x gradlew
 fi
 
+chmod +x gradlew
+
 docker system prune -f
 
 docker buildx build -t "${IMAGE_REGISTRY}/${REPO_NAME}:${IMAGE_TAG}" .
