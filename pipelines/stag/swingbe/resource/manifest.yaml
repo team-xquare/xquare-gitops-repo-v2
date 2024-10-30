@@ -96,7 +96,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: swingbe-stag
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/swingbe-stag:stag-f8t0tgu6
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/swingbe-stag:stag-11jpblqk
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
