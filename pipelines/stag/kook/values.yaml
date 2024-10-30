@@ -1,0 +1,10 @@
+club: kook
+name: kook
+organization: 2024-Jongwons
+repository: Kook-BE
+branch: develop
+environment: stag
+containerPort: 8089
+domain: kook-stag.xquare.app
+language: java
+critical_service: false
