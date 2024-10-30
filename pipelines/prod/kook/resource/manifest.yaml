@@ -96,7 +96,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: kook-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/kook-prod:prod-ei9te5db
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/kook-prod:prod-m6aiu9h6
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8089
