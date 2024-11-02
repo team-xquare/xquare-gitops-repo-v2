@@ -35,4 +35,9 @@ jobs:
           commit_user_name: XQUARE GitOps Bot
           commit_user_email: teamxquare@gmail.com
           commit_author: XQUARE GitOps Bot <teamxquare@gmail.com>
-        
+
+      - name: Create Elastic Agent Profile
+        run: |
+          cd scripts
+          chmod +x create-agent-profile.sh
+          ./create-agent-profile.sh ${{ github.event.client_payload.service_name }}
