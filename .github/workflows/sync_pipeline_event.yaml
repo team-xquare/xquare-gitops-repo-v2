@@ -36,6 +36,17 @@ jobs:
           commit_user_email: teamxquare@gmail.com
           commit_author: XQUARE GitOps Bot <teamxquare@gmail.com>
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Update kubeconfig
+        run: |
+          aws eks update-kubeconfig --name xquare-v3-cluster
+
       - name: Create Elastic Agent Profile
         run: |
           cd scripts
