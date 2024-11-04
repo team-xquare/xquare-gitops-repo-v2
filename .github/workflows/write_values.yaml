@@ -65,5 +65,5 @@ jobs:
             {
               "ref" : "main",
               "pipeline_name" : "build-${{ github.event.client_payload.name }}-${{ github.event.client_payload.environment }}",
-              "service_name" : "${{ github.event.client_payload.name }}",
+              "service_name" : "${{ github.event.client_payload.name }}"
             }
