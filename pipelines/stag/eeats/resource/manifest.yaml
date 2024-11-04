@@ -95,7 +95,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: eeats-stag
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/eeats-stag:stag-4nt0gk7d
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/eeats-stag:stag-3foms2dw
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
