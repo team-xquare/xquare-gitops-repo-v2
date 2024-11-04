@@ -1,0 +1,10 @@
+club: founderz
+name: founderz-backend
+organization: teamFOUNDERZ
+repository: FOUNDERZ-2024-back-end
+branch: develop
+environment: stag
+containerPort: 8080
+domain: founderz-server-stag.xquare.app
+language: java
+critical_service: false
