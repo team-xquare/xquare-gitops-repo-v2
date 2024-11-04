@@ -49,6 +49,6 @@ jobs:
 
       - name: Create Elastic Agent Profile
         run: |
-          cd scripts
-          chmod +x create-agent-profile.sh
-          ./create-agent-profile.sh ${{ github.event.client_payload.service_name }}
+          cd script
+          chmod +x create_agent_profile.sh
+          ./create_agent_profile.sh ${{ github.event.client_payload.service_name }}
