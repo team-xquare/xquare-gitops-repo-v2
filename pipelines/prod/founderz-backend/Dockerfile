@@ -14,6 +14,6 @@ FROM amazoncorretto:21
 
 ENV TZ=Asia/Seoul
 
-COPY --from=build /appfounderz-boot/build/libs/founderz-boot-0.0.1-SNAPSHOT.jar /app.jar
+COPY --from=build /app/founderz-boot/build/libs/founderz-boot-0.0.1-SNAPSHOT.jar /app.jar
 
 ENTRYPOINT ["java", "-jar", "/app.jar"]
