@@ -19,8 +19,8 @@ jobs:
 
       - name: Grant execute permission for script
         run: |
-          chmod +x ./update_manifest.sh
-          chmod +x ./apply_manifest.sh
+          chmod +x ./script/update_manifest.sh
+          chmod +x ./script/apply_manifest.sh
 
       - name: Pull latest changes
         run: git pull origin main
@@ -37,10 +37,10 @@ jobs:
           aws eks update-kubeconfig --name xquare-v3-cluster
 
       - name: Update Manifest
-        run: ./update_manifest.sh
+        run: ./script/update_manifest.sh
 
       - name: Apply Manifest
-        run: ./apply_manifest.sh
+        run: ./script/apply_manifest.sh
 
       - name: Commit The New Image Reference
         uses: stefanzweifel/git-auto-commit-action@v4
