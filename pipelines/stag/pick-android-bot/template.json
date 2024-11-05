@@ -1,0 +1,1 @@
+{"node_version":"22.5.1","build_commands":["yarn install"],"builder":"node","build_dir":"/","command":"yarn node index.js","port":3000}
