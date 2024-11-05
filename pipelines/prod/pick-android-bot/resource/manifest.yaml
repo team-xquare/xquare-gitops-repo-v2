@@ -95,7 +95,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: pick-android-bot-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/pick-android-bot-prod:prod-psm40r9k
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/pick-android-bot-prod:prod-xe6hswq3
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
