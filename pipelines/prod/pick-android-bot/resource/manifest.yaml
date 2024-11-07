@@ -3,35 +3,35 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  namespace: eeats-stag
-  name: eeats-stag
+  namespace: pick-prod
+  name: pick-android-bot-prod
 spec:
   maxUnavailable: 0
   selector:
     matchLabels:
-      app.kubernetes.io/name: eeats-stag
+      app.kubernetes.io/name: pick-android-bot-prod
 ---
 # Source: applications/templates/vaultsecret.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: eeats-stag-account
-  namespace: eeats-stag
+  name: pick-android-bot-prod-account
+  namespace: pick-prod
 ---
 # Source: applications/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: eeats-stag
-  name: eeats-stag
+  namespace: pick-prod
+  name: pick-android-bot-prod
   labels:
-    app: eeats-stag
-    project: eeats
-    environment: stag
+    app: pick-android-bot-prod
+    project: pick-android-bot
+    environment: prod
 spec:
   type: ClusterIP
   selector:
-    app: eeats-stag
+    app: pick-android-bot-prod
   ports:
     - name: http
       port: 80
@@ -46,13 +46,13 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: eeats-stag
-  name: eeats-stag
+  namespace: pick-prod
+  name: pick-android-bot-prod
   labels:
-    app: eeats-stag
-    project: eeats
+    app: pick-android-bot-prod
+    project: pick-android-bot
     test: test
-    environment: stag
+    environment: prod
 spec:
   replicas: 1
   revisionHistoryLimit: 0
@@ -63,7 +63,7 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app: eeats-stag
+      app: pick-android-bot-prod
   template:
     metadata:      
       annotations:
@@ -71,10 +71,10 @@ spec:
         sidecar.istio.io/proxyCPU: "5m"
         sidecar.istio.io/proxyMemory: "128Mi"
       labels:
-        app: eeats-stag
-        project: eeats
+        app: pick-android-bot-prod
+        project: pick-android-bot
     spec:
-      serviceAccountName: eeats-stag-account
+      serviceAccountName: pick-android-bot-prod-account
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -83,7 +83,7 @@ spec:
                   - key: app
                     operator: In
                     values:
-                      - eeats-stag
+                      - pick-android-bot-prod
               topologyKey: "kubernetes.io/hostname"
       nodeSelector:
         Karpenter: enabled
@@ -94,14 +94,14 @@ spec:
           value: "true"
       terminationGracePeriodSeconds: 120
       containers:
-        - name: eeats-stag
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/eeats-stag:stag-x0o0s7ti
+        - name: pick-android-bot-prod
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/pick-android-bot-prod:prod-na2vwilq
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
           envFrom:
           - secretRef:
-              name: eeats-stag
+              name: pick-android-bot-prod
           resources:
             requests:
               memory: "500Mi"
@@ -120,14 +120,14 @@ spec:
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultAuth
 metadata:
-  name: eeats-stag-auth
-  namespace: eeats-stag
+  name: pick-android-bot-prod-auth
+  namespace: pick-prod
 spec:
   method: kubernetes
   mount: kubernetes
   kubernetes:
     role: xquare
-    serviceAccount: eeats-stag-account
+    serviceAccount: pick-android-bot-prod-account
     audiences:
       - vault
 ---
@@ -135,30 +135,30 @@ spec:
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultDynamicSecret
 metadata:
-  name: eeats-stag-secret
-  namespace: eeats-stag
+  name: pick-android-bot-prod-secret
+  namespace: pick-prod
 spec:
   mount: xquare-kv
-  path: eeats-stag
+  path: pick-android-bot-prod
   destination:
-    name: eeats-stag
+    name: pick-android-bot-prod
     create: true
-  vaultAuthRef: eeats-stag/eeats-stag-auth
+  vaultAuthRef: pick-prod/pick-android-bot-prod-auth
   rolloutRestartTargets:
     - kind: Deployment
-      name: eeats-stag
+      name: pick-android-bot-prod
 ---
 # Source: applications/templates/vpa.yaml
 apiVersion: autoscaling.k8s.io/v1
 kind: VerticalPodAutoscaler
 metadata:
-  name: eeats-stag-vpa
-  namespace: eeats-stag
+  name: pick-android-bot-prod-vpa
+  namespace: pick-prod
 spec:
   targetRef:
     apiVersion: "apps/v1"
     kind:       Deployment
-    name:       eeats-stag
+    name:       pick-android-bot-prod
   updatePolicy:
     updateMode: "Auto"
   resourcePolicy:
@@ -170,20 +170,20 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: eeats-stag-domain-ingress
+  name: pick-android-bot-prod-domain-ingress
   labels:
     app.kubernetes.io/instance: xquare-ingress
-  namespace: eeats-stag
+  namespace: pick-prod
 spec:
   gateways:
     - istio-system/xquare-ingressgateway
   hosts:
-    - eeats-stag.xquare.app
+    - pick-android-bot.xquare.app
   http:
-    - name: eeats
+    - name: pick-android-bot
       route:
         - destination:
-            host: 'eeats-stag.eeats-stag.svc.cluster.local'
+            host: 'pick-android-bot-prod.pick-prod.svc.cluster.local'
             port:
               number: 3000
       corsPolicy:
