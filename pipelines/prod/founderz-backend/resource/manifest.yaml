@@ -125,7 +125,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: founderz-backend-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/founderz-backend-prod:prod-n0ly0pna
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/founderz-backend-prod:prod-ot8ibehe
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
