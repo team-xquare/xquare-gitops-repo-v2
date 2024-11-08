@@ -32,16 +32,13 @@ for ENV in "${ENVIRONMENTS[@]}"; do
         BUILD_PROFILE_ID=$NAME-$ENVIRONMENT-agent-profile
         echo $BUILD_PROFILE_ID
 
-        # Get the pod template and escape special characters
         POD_TEMPLATE=$(./split_yaml_by_source.sh "$(helm template "$SERVICE" "$CHART_PATH" -f "$VALUES_FILE")" gocd/templates/elastic-agent.yaml | awk '{printf "%s\\n", $0}' | sed 's/"/\\"/g')
 
-        # Fetch the current ETag value
         ETAG=$(curl -s -I -X GET "https://gocd.xquare.app/go/api/elastic/profiles/$BUILD_PROFILE_ID" \
                -H 'Accept: application/vnd.go.cd.v2+json' | grep etag | awk '{print $2}' | tr -d '\r')
 
         echo "Fetched ETag: $ETAG"
 
-        # Update the elastic agent profile using the fetched ETag
         curl "https://gocd.xquare.app/go/api/elastic/profiles/$BUILD_PROFILE_ID" \
              -H 'Accept: application/vnd.go.cd.v2+json' \
              -H 'Content-Type: application/json' \
@@ -87,7 +84,7 @@ for ENV in "${ENVIRONMENTS[@]}"; do
                ]
              }"
 
-        ./split_yaml_by_source.sh "$(helm template "$SERVICE" "$CHART_PATH" -f "$VALUES_FILE")" gocd/templates/elastic-agent-pvc.yaml > elastic-agent-pvc.yaml
+        ./split_yaml_by_source.sh "$(helm template "$SERVICE" "$CHART_PATH" -f "$VALUES_FILE")" server/templates/elastic-agent-pvc.yaml > elastic-agent-pvc.yaml
         kubectl apply -f elastic-agent-pvc.yaml
     done
 done
