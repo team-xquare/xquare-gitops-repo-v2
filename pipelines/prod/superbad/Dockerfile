@@ -4,7 +4,7 @@ FROM node:22.5.1 AS build
 COPY . .
 
 
-RUN yarn && yarn install
+RUN yarn build
 
 
 FROM node:22.5.1
