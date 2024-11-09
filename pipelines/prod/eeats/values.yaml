@@ -8,3 +8,4 @@ containerPort: 3000
 domain: eeats.xquare.app
 language: javascript
 critical_service: false
+private_service: false
