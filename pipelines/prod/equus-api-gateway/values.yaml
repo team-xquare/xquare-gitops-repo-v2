@@ -8,4 +8,4 @@ containerPort: 8080
 domain: equus.xquare.app
 language: java
 critical_service: false
-private_service: false
+private_service: true
