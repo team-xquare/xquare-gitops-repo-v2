@@ -1,0 +1,56 @@
+name: sync-values-changes
+
+on:
+  push:
+    paths:
+      - "pipelines/**/values.yaml"
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: false
+
+    steps:
+      - name: Check Out The Repository
+        uses: actions/checkout@v2
+        with:
+          ref: main
+
+      - name: Grant execute permission for script
+        run: |
+          chmod +x ./script/update_values_manifest.sh
+          chmod +x ./script/apply_values_manifest.sh
+
+      - name: Pull latest changes
+        run: git pull origin main
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Update kubeconfig
+        run: |
+          aws eks update-kubeconfig --name xquare-v3-cluster
+
+      - name: Update Manifest
+        run: ./script/update_values_manifest.sh
+
+      - name: Apply Manifest
+        run: ./script/apply_values_manifest.sh
+
+      - name: Commit The New Image Reference
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "release :: update manifest from values changes"
+          branch: main
+          commit_options: "--no-verify --signoff"
+          repository: .
+          commit_user_name: XQUARE GitOps Bot
+          commit_user_email: teamxquare@gmail.com
+          commit_author: XQUARE GitOps Bot <teamxquare@gmail.com>
