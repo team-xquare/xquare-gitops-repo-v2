@@ -1,0 +1,32 @@
+name: Delete Kubernetes Resources
+
+on:
+  push:
+    paths:
+      - 'pipelines/prod/**'
+      - 'pipelines/stag/**'
+
+jobs:
+  delete-resources:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get deleted files
+        id: get_deleted_files
+        run: |
+          git diff --name-status HEAD^ HEAD | grep '^D' | cut -f2 > deleted_files.txt
+          echo "Deleted files:"
+          cat deleted_files.txt
+
+      - name: Process deleted manifests
+        if: always()
+        run: |
+          echo "Processing deleted Kubernetes manifests..."
+          cat deleted_files.txt | grep '/resource/manifest.yaml$' | xargs -P 4 -I {} sh -c '
+            echo "Attempting to delete resource defined in: {}"
+            kubectl delete -f "{}" && echo "Successfully deleted resource from: {}" || echo "Failed delete resource from: {}"
+          '
