@@ -17,6 +17,8 @@ cat deleted_files.txt | grep '/resource/manifest.yaml$' | while read -r file; do
   # Git에서 삭제된 파일 내용을 추출하여 삭제 처리
   git show HEAD^:"$file" | kubectl delete -f - \
   && echo "Successfully deleted: $file" \
-  || echo "Failed to delete: $
+  || echo "Failed to delete: $file"
+
+done
 
 echo "All deletion tasks have been completed."
