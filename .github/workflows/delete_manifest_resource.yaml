@@ -3,8 +3,7 @@ name: Delete Kubernetes Resources
 on:
   push:
     paths:
-      - 'pipelines/prod/**'
-      - 'pipelines/stag/**'
+      - 'pipelines/**/**'
 
 jobs:
   delete-resources:
