@@ -8,11 +8,13 @@ on:
 jobs:
   delete-resources:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Check Out The Repository
+        uses: actions/checkout@v2
         with:
-          fetch-depth: 0
+          ref: main
+          fetch-depth: 2
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -25,5 +27,9 @@ jobs:
         run: |
           aws eks update-kubeconfig --name xquare-v3-cluster
 
+      - name: Grant execute permission for script
+        run: |
+          chmod +x ./script/delete_kubernetes_resources.sh
+
       - name: Delete Kubernetes resources
-        run: ./scripts/delete_kubernetes_resources.sh
+        run: ./script/delete_kubernetes_resources.sh
