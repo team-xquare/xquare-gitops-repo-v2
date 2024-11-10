@@ -60,4 +60,4 @@ pipelines:
                         chmod +x resource_deploy.sh
                         SANITIZED_NAME=$(echo superbad | sed 's/-/_/g')
                         RESOURCE_VAR_NAME="${SANITIZED_NAME}_REPOSITORY"
-                        ./resource_deploy.sh superbad stag ${!RESOURCE_VAR_NAME}
+                        ./resource_deploy.sh superbad prod ${!RESOURCE_VAR_NAME}
