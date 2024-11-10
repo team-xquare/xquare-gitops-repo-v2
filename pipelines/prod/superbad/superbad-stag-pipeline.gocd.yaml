@@ -2,7 +2,7 @@
 # Source: gocd/templates/pipeline.yaml
 format_version: 11
 pipelines:
-  build-superbad-stag:
+  build-superbad-prod:
     group: xquare
     environment_variables:
 
@@ -12,12 +12,12 @@ pipelines:
         git: https://github.com/SuperBad-dsm/SuperBad_Nest.js-BE
         shallow_clone: false
         auto_update: true
-        branch: develop
+        branch: main
     stages:
       - build:
           jobs:
             build:
-              elastic_profile_id: superbad-stag-agent-profile
+              elastic_profile_id: superbad-prod-agent-profile
               artifacts:
                 - build:
                     source: build_result.env
