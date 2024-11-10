@@ -16,17 +16,8 @@ jobs:
           fetch-depth: 0
 
       - name: Get deleted files
-        id: get_deleted_files
-        run: |
-          git diff --name-status HEAD^ HEAD | grep '^D' | cut -f2 > deleted_files.txt
-          echo "Deleted files:"
-          cat deleted_files.txt
+        run: ./../../scripts/get_deleted_files.sh
 
       - name: Process deleted manifests
         if: always()
-        run: |
-          echo "Processing deleted Kubernetes manifests..."
-          cat deleted_files.txt | grep '/resource/manifest.yaml$' | xargs -P 4 -I {} sh -c '
-            echo "Attempting to delete resource defined in: {}"
-            kubectl delete -f "{}" && echo "Successfully deleted resource from: {}" || echo "Failed delete resource from: {}"
-          '
+        run: ./../../scripts/process_deleted_manifests.sh
