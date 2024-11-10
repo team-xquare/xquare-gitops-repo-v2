@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # 변경된 파일을 가져옴
 echo "Fetching the list of deleted files..."
 git diff --name-status HEAD^ HEAD | grep '^D' | cut -f2 > deleted_files.txt
