@@ -28,13 +28,13 @@ pipelines:
                     arguments:
                       - -c
                       - |
-                        curl -o template.json https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/pipelines/stag/superbad/template.json
+                        curl -o template.json https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/pipelines/prod/superbad/template.json
 
                         curl -o docker_build.sh https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/script/docker_build.sh
-                        curl -o Dockerfile https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/pipelines/stag/superbad/Dockerfile
+                        curl -o Dockerfile https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/pipelines/prod/superbad/Dockerfile
                         chmod +x docker_build.sh
 
-                        ./docker_build.sh stag superbad "$(cat template.json)"
+                        ./docker_build.sh prod superbad "$(cat template.json)"
       - deploy:
           jobs:
             deploy:
