@@ -103,7 +103,6 @@ spec:
         sidecar.istio.io/rewriteAppHTTPProbers: "false"
         sidecar.istio.io/proxyCPU: "5m"
         sidecar.istio.io/proxyMemory: "128Mi"
-        instrumentation.opentelemetry.io/inject-java: "true"
       labels:
         app: xquare-infra-prod
         project: xquare-infra
