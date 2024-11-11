@@ -2,9 +2,9 @@ club: superbad
 name: superbad
 organization: SuperBad-dsm
 repository: SuperBad_Nest.js-BE
-branch: develop
-environment: stag
+branch: main
+environment: prod
 containerPort: 3000
-domain: superbad-server-stag.xquare.app
+domain: superbad-server.xquare.app
 language: javascript
 critical_service: false
