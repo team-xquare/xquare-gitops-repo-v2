@@ -3,20 +3,20 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  namespace: superbad-stag
-  name: superbad-stag
+  namespace: superbad-prod
+  name: superbad-prod
 spec:
   maxUnavailable: 0
   selector:
     matchLabels:
-      app.kubernetes.io/name: superbad-stag
+      app.kubernetes.io/name: superbad-prod
 ---
 # Source: applications/templates/vaultsecret.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: superbad-stag-account
-  namespace: superbad-stag
+  name: superbad-prod-account
+  namespace: superbad-prod
 ---
 # Source: applications/templates/elastic-agent-pvc.yaml
 apiVersion: storage.k8s.io/v1
@@ -38,7 +38,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   namespace: gocd
-  name: superbad-stag-docker-pvc
+  name: superbad-prod-docker-pvc
 spec:
   accessModes:
     - ReadWriteOnce
@@ -51,16 +51,16 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: superbad-stag
-  name: superbad-stag
+  namespace: superbad-prod
+  name: superbad-prod
   labels:
-    app: superbad-stag
+    app: superbad-prod
     project: superbad
-    environment: stag
+    environment: prod
 spec:
   type: ClusterIP
   selector:
-    app: superbad-stag
+    app: superbad-prod
   ports:
     - name: http
       port: 80
@@ -75,13 +75,13 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: superbad-stag
-  name: superbad-stag
+  namespace: superbad-prod
+  name: superbad-prod
   labels:
-    app: superbad-stag
+    app: superbad-prod
     project: superbad
     test: test
-    environment: stag
+    environment: prod
 spec:
   replicas: 1
   revisionHistoryLimit: 0
@@ -92,7 +92,7 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app: superbad-stag
+      app: superbad-prod
   template:
     metadata:      
       annotations:
@@ -100,10 +100,10 @@ spec:
         sidecar.istio.io/proxyCPU: "5m"
         sidecar.istio.io/proxyMemory: "128Mi"
       labels:
-        app: superbad-stag
+        app: superbad-prod
         project: superbad
     spec:
-      serviceAccountName: superbad-stag-account
+      serviceAccountName: superbad-prod-account
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -112,7 +112,7 @@ spec:
                   - key: app
                     operator: In
                     values:
-                      - superbad-stag
+                      - superbad-prod
               topologyKey: "kubernetes.io/hostname"
       nodeSelector:
         Karpenter: enabled
@@ -123,14 +123,14 @@ spec:
           value: "true"
       terminationGracePeriodSeconds: 120
       containers:
-        - name: superbad-stag
+        - name: superbad-prod
           image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/superbad-stag:stag-89nslz6o
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
           envFrom:
           - secretRef:
-              name: superbad-stag
+              name: superbad-prod
           resources:
             requests:
               memory: "500Mi"
@@ -149,14 +149,14 @@ spec:
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultAuth
 metadata:
-  name: superbad-stag-auth
-  namespace: superbad-stag
+  name: superbad-prod-auth
+  namespace: superbad-prod
 spec:
   method: kubernetes
   mount: kubernetes
   kubernetes:
     role: xquare
-    serviceAccount: superbad-stag-account
+    serviceAccount: superbad-prod-account
     audiences:
       - vault
 ---
@@ -164,30 +164,30 @@ spec:
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultDynamicSecret
 metadata:
-  name: superbad-stag-secret
-  namespace: superbad-stag
+  name: superbad-prod-secret
+  namespace: superbad-prod
 spec:
   mount: xquare-kv
-  path: superbad-stag
+  path: superbad-prod
   destination:
-    name: superbad-stag
+    name: superbad-prod
     create: true
-  vaultAuthRef: superbad-stag/superbad-stag-auth
+  vaultAuthRef: superbad-prod/superbad-prod-auth
   rolloutRestartTargets:
     - kind: Deployment
-      name: superbad-stag
+      name: superbad-prod
 ---
 # Source: applications/templates/vpa.yaml
 apiVersion: autoscaling.k8s.io/v1
 kind: VerticalPodAutoscaler
 metadata:
-  name: superbad-stag-vpa
-  namespace: superbad-stag
+  name: superbad-prod-vpa
+  namespace: superbad-prod
 spec:
   targetRef:
     apiVersion: "apps/v1"
     kind:       Deployment
-    name:       superbad-stag
+    name:       superbad-prod
   updatePolicy:
     updateMode: "Auto"
   resourcePolicy:
@@ -199,20 +199,20 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: superbad-stag-domain-ingress
+  name: superbad-prod-domain-ingress
   labels:
     app.kubernetes.io/instance: xquare-ingress
-  namespace: superbad-stag
+  namespace: superbad-prod
 spec:
   gateways:
     - istio-system/xquare-ingressgateway
   hosts:
-    - superbad-server-stag.xquare.app
+    - superbad-server.xquare.app
   http:
     - name: superbad
       route:
         - destination:
-            host: 'superbad-stag.superbad-stag.svc.cluster.local'
+            host: 'superbad-prod.superbad-prod.svc.cluster.local'
             port:
               number: 3000
       corsPolicy:
