@@ -124,7 +124,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: superbad-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/superbad-prod:prod-pi7aeiqi
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/superbad-prod:prod-uj7j3cm0
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
