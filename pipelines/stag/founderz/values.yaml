@@ -1,0 +1,10 @@
+club: founderz
+name: founderz
+organization: teamFOUNDERZ
+repository: FOUNDERZ-2024-front-end
+branch: develop
+environment: stag
+containerPort: 3000
+domain: founderz-stag.xquare.app
+language: javascript
+critical_service: false
