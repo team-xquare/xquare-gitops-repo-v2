@@ -6,7 +6,7 @@ RUN apk add --no-cache libc6-compat
 COPY . .
 
 
-RUN yarn start
+RUN yarn && yarn build
 
 
 
