@@ -1,0 +1,10 @@
+club: founderz
+name: founderz
+organization: teamFOUNDERZ
+repository: FOUNDERZ-2024-front-end
+branch: main
+environment: prod
+containerPort: 3000
+domain: founderz.xquare.app
+language: javascript
+critical_service: false
