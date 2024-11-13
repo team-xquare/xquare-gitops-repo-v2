@@ -23,7 +23,7 @@ try_files \$uri \$uri/ /index.html =404;\
 }\
 }" > /etc/nginx/conf.d/default.conf
 
-COPY --from=builder / /usr/share/nginx/html
+COPY --from=builder /build /usr/share/nginx/html
 
 EXPOSE 3000
 
