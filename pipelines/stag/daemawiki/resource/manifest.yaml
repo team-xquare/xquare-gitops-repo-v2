@@ -125,7 +125,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: daemawiki-stag
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/daemawiki-stag:stag-neldz3pv
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/daemawiki-stag:stag-ys8k1s83
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -208,7 +208,7 @@ spec:
   gateways:
     - istio-system/xquare-ingressgateway
   hosts:
-    - daemawiki-stag.xquare.app
+    - daemawiki-server-stag.xquare.app
   http:
     - name: daemawiki
       route:
