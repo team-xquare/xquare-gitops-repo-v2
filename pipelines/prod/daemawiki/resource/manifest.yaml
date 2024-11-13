@@ -208,7 +208,7 @@ spec:
   gateways:
     - istio-system/xquare-ingressgateway
   hosts:
-    - daemawiki.xquare.app
+    - daemawiki-server.xquare.app
   http:
     - name: daemawiki
       route:
