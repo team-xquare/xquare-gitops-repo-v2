@@ -5,5 +5,5 @@ repository: Claude
 branch: main
 environment: prod
 containerPort: 8080
-domain: daemawiki.xquare.app
+domain: daemawiki-server.xquare.app
 language: java
