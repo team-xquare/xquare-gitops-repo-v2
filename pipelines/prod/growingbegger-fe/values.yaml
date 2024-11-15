@@ -1,0 +1,10 @@
+club: growingbegger
+name: growingbegger-fe
+organization: GrowingBegger
+repository: GB-FE
+branch: main
+environment: prod
+containerPort: 3000
+domain: ge.xquare.app
+language: javascript
+critical_service: false
