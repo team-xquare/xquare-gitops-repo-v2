@@ -108,7 +108,7 @@ for ENV in "${ENVIRONMENTS[@]}"; do
                ]
              }"
 
-        ./script/split_yaml_by_source.sh "$(helm template "$SERVICE" "$CHART_PATH" -f "$VALUES_FILE")" gocd/templates/elastic-agent-pvc.yaml > elastic-agent-pvc.yaml
+        ./split_yaml_by_source.sh "$(helm template "$SERVICE" "$CHART_PATH" -f "$VALUES_FILE")" gocd/templates/elastic-agent-pvc.yaml > elastic-agent-pvc.yaml
         kubectl apply -f elastic-agent-pvc.yaml
 
         cd "$ORIGINAL_DIR"
