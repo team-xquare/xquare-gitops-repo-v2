@@ -1,0 +1,10 @@
+club: growingbegger
+name: growingbegger-fe
+organization: GrowingBegger
+repository: GB-FE
+branch: develop
+environment: stag
+containerPort: 3000
+domain: ge-stag.xquare.app
+language: javascript
+critical_service: false
