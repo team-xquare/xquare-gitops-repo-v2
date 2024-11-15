@@ -11,6 +11,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 SERVICE=$1
 BASE_PATH="../pipelines"
 CHART_PATH="../templates/gocd"
+SERVER_CHART_PATH="../templates/server"
 ENVIRONMENTS=("prod" "stag")
 
 function check_and_install_yq {
@@ -108,7 +109,8 @@ for ENV in "${ENVIRONMENTS[@]}"; do
                ]
              }"
 
-        ./split_yaml_by_source.sh "$(helm template "$SERVICE" "$CHART_PATH" -f "$VALUES_FILE")" gocd/templates/elastic-agent-pvc.yaml > elastic-agent-pvc.yaml
+        ./split_yaml_by_source.sh "$(helm template "$SERVICE" "$SERVER_CHART_PATH" -f "$VALUES_FILE")" applications/templates/elastic-agent-pvc.yaml > elastic-agent-pvc.yaml
+        cat elastic-agent-pvc.yaml
         kubectl apply -f elastic-agent-pvc.yaml
 
         cd "$ORIGINAL_DIR"
