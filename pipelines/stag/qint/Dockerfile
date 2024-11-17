@@ -7,7 +7,7 @@ COPY . .
 
 
 RUN --mount=type=cache,target=/root/.gradle \
-    ./gradlew build -x test
+    ./gradlew bulid -x test
 
 
 FROM amazoncorretto:17
