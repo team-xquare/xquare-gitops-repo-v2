@@ -14,6 +14,6 @@ FROM amazoncorretto:17
 
 ENV TZ=Asia/Seoul
 
-COPY --from=build /appbuild/libs/Qint_backend-0.0.1-SNAPSHOT.jar /app.jar
+COPY --from=build /app/build/libs/Qint_backend-0.0.1-SNAPSHOT.jar /app.jar
 
 ENTRYPOINT ["java", "-jar", "/app.jar"]
