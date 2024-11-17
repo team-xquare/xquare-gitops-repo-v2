@@ -9,7 +9,7 @@ pipelines:
     label_template: "${git[:7]}"
     materials:
       git:
-        git: https://github.com/Q-int/Qint-backend
+        git: https://github.com/Q-int/Qint_backend
         shallow_clone: false
         auto_update: true
         branch: main
