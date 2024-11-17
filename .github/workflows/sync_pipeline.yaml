@@ -2,7 +2,7 @@ name: sync-pipeline
 on:
   push:
     paths:
-      - 'templates/gocd/templates/**'
+      - "templates/gocd/templates/**"
 jobs:
   ci:
     runs-on: ubuntu-latest
@@ -10,7 +10,7 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: false
-    
+
     steps:
       - name: Check Out The Repository
         uses: actions/checkout@v2
@@ -31,7 +31,7 @@ jobs:
         with:
           commit_message: "release :: deploy pipeline"
           branch: main
-          commit_options: '--no-verify --signoff'
+          commit_options: "--no-verify --signoff"
           repository: .
           commit_user_name: XQUARE GitOps Bot
           commit_user_email: teamxquare@gmail.com

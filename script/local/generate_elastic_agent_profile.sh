@@ -35,11 +35,13 @@ for ENV in "${ENVIRONMENTS[@]}"; do
         POD_TEMPLATE=$(./split_yaml_by_source.sh "$(helm template "$SERVICE" "$CHART_PATH" -f "$VALUES_FILE")" gocd/templates/elastic-agent.yaml | awk '{printf "%s\\n", $0}' | sed 's/"/\\"/g')
 
         ETAG=$(curl -s -I -X GET "https://gocd.xquare.app/go/api/elastic/profiles/$BUILD_PROFILE_ID" \
+               -u "${{ GOCD_USERNAME }}:${{ GOCD_PASSWORD }}" \
                -H 'Accept: application/vnd.go.cd.v2+json' | grep etag | awk '{print $2}' | tr -d '\r')
 
         echo "Fetched ETag: $ETAG"
 
         curl "https://gocd.xquare.app/go/api/elastic/profiles/$BUILD_PROFILE_ID" \
+             -u "${{ GOCD_USERNAME }}:${{ GOCD_PASSWORD }}" \
              -H 'Accept: application/vnd.go.cd.v2+json' \
              -H 'Content-Type: application/json' \
              -H "If-Match: $ETAG" \
