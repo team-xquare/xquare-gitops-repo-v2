@@ -2,7 +2,7 @@ name: sync-server-template
 on:
   push:
     paths:
-      - 'templates/server/templates/**'
+      - "templates/server/templates/**"
 jobs:
   ci:
     runs-on: ubuntu-latest
@@ -47,7 +47,7 @@ jobs:
         with:
           commit_message: "release :: deploy changed manifest"
           branch: main
-          commit_options: '--no-verify --signoff'
+          commit_options: "--no-verify --signoff"
           repository: .
           commit_user_name: XQUARE GitOps Bot
           commit_user_email: teamxquare@gmail.com
