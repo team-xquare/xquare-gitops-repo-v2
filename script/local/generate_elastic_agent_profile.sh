@@ -41,6 +41,7 @@ for ENV in "${ENVIRONMENTS[@]}"; do
         echo "Fetched ETag: $ETAG"
 
         curl "https://gocd.xquare.app/go/api/elastic/profiles/$BUILD_PROFILE_ID" \
+             -u "${{ GOCD_USERNAME }}:${{ GOCD_PASSWORD }}" \
              -H 'Accept: application/vnd.go.cd.v2+json' \
              -H 'Content-Type: application/json' \
              -H "If-Match: $ETAG" \
