@@ -9,7 +9,7 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: false
-    
+
     steps:
       - name: Check Out The Repository
         uses: actions/checkout@v2
@@ -30,7 +30,7 @@ jobs:
         with:
           commit_message: "release :: deploy pipeline"
           branch: main
-          commit_options: '--no-verify --signoff'
+          commit_options: "--no-verify --signoff"
           repository: .
           commit_user_name: XQUARE GitOps Bot
           commit_user_email: teamxquare@gmail.com
@@ -48,6 +48,9 @@ jobs:
           aws eks update-kubeconfig --name xquare-v3-cluster
 
       - name: Create Elastic Agent Profile
+        env:
+          GOCD_USERNAME: ${{ secrets.GOCD_USERNAME }}
+          GOCD_PASSWORD: ${{ secrets.GOCD_PASSWORD }}
         run: |
           cd script
           chmod +x create_agent_profile.sh
