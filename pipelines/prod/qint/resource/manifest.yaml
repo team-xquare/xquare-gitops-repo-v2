@@ -1,0 +1,243 @@
+---
+# Source: applications/templates/poddistruptionbudget.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  namespace: info-prod
+  name: qint-prod
+spec:
+  maxUnavailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: qint-prod
+---
+# Source: applications/templates/vaultsecret.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: qint-prod-account
+  namespace: info-prod
+---
+# Source: applications/templates/elastic-agent-pvc.yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: build-agent-storage-class
+  namespace: gocd
+provisioner: ebs.csi.aws.com
+parameters:
+  type: gp3
+  iops: "3000"
+  throughput: "125"
+  fsType: ext4
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
+---
+# Source: applications/templates/elastic-agent-pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: gocd
+  name: qint-prod-docker-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10G
+  storageClassName: build-agent-storage-class
+---
+# Source: applications/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: info-prod
+  name: qint-prod
+  labels:
+    app: qint-prod
+    project: qint
+    environment: prod
+spec:
+  type: ClusterIP
+  selector:
+    app: qint-prod
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      protocol: TCP
+    - name: port
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+---
+# Source: applications/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: info-prod
+  name: qint-prod
+  labels:
+    app: qint-prod
+    project: qint
+    test: test
+    environment: prod
+spec:
+  replicas: 2
+  revisionHistoryLimit: 0
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: qint-prod
+  template:
+    metadata:      
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "false"
+        sidecar.istio.io/proxyCPU: "5m"
+        sidecar.istio.io/proxyMemory: "128Mi"
+        instrumentation.opentelemetry.io/inject-java: "true"
+      labels:
+        app: qint-prod
+        project: qint
+    spec:
+      serviceAccountName: qint-prod-account
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - qint-prod
+              topologyKey: "kubernetes.io/hostname"
+      nodeSelector:
+        Karpenter: enabled
+      tolerations:
+        - effect: "NoSchedule"
+          key: xquare/critical_service
+          operator: "Equal"
+          value: "true"
+      terminationGracePeriodSeconds: 120
+      containers:
+        - name: qint-prod
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/qint-prod:prod-bra89uko
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          envFrom:
+          - secretRef:
+              name: qint-prod
+          resources:
+            requests:
+              memory: "500Mi"
+              cpu: "20m"
+              ephemeral-storage: "20Mi"
+            limits:
+              memory: "2Gi"
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            successThreshold: 3
+---
+# Source: applications/templates/vaultsecret.yaml
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: qint-prod-auth
+  namespace: info-prod
+spec:
+  method: kubernetes
+  mount: kubernetes
+  kubernetes:
+    role: xquare
+    serviceAccount: qint-prod-account
+    audiences:
+      - vault
+---
+# Source: applications/templates/vaultsecret.yaml
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultDynamicSecret
+metadata:
+  name: qint-prod-secret
+  namespace: info-prod
+spec:
+  mount: xquare-kv
+  path: qint-prod
+  destination:
+    name: qint-prod
+    create: true
+  vaultAuthRef: info-prod/qint-prod-auth
+  rolloutRestartTargets:
+    - kind: Deployment
+      name: qint-prod
+---
+# Source: applications/templates/vpa.yaml
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: qint-prod-vpa
+  namespace: info-prod
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind:       Deployment
+    name:       qint-prod
+  updatePolicy:
+    updateMode: "Auto"
+  resourcePolicy:
+    containerPolicies:
+      - containerName: "*"
+        controlledResources: [ "memory" ]
+---
+# Source: applications/templates/virtual-service.yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: qint-prod-domain-ingress
+  labels:
+    app.kubernetes.io/instance: xquare-ingress
+  namespace: info-prod
+spec:
+  gateways:
+    - istio-system/xquare-ingressgateway
+  hosts:
+    - qint-server.xquare.app
+  http:
+    - name: qint
+      route:
+        - destination:
+            host: 'qint-prod.info-prod.svc.cluster.local'
+            port:
+              number: 8080
+      corsPolicy:
+        allowOrigins:
+          - regex: ".*"
+        allowMethods:
+          - POST
+          - GET
+          - PUT
+          - PATCH
+          - DELETE
+          - OPTIONS
+        allowCredentials: true
+        allowHeaders:
+          - content-type
+          - authorization
+          - accept
+          - accept-encoding
+          - Refresh-Token
+          - X-Not-Using-Xquare-Auth
+          - Oauth-Token
+          - oa-token
+          - Request-User-Id
+          - Request-User-Role
+          - X-Refresh-Token
+          - x-identifier
+        maxAge: "24h"
