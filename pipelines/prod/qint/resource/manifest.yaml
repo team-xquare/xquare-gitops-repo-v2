@@ -125,7 +125,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: qint-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/qint-prod:prod-bra89uko
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/qint-prod:prod-jbb6faos
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
