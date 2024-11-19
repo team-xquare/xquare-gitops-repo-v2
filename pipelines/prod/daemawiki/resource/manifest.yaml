@@ -44,7 +44,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 10G
+      storage: 20G
   storageClassName: build-agent-storage-class
 ---
 # Source: applications/templates/service.yaml
