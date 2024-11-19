@@ -8,7 +8,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 10G
+      storage: 20G
   storageClassName: build-agent-storage-class
 ---
 apiVersion: storage.k8s.io/v1
