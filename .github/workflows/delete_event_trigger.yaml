@@ -1,0 +1,47 @@
+name: delete_event_trigger
+
+on:
+  repository_dispatch:
+    types: [delete-service]
+
+jobs:
+  delete-service:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Validate service name
+        env:
+          SERVICE_NAME: ${{ github.event.client_payload.service_name }}
+        run: |
+          if [[ -z "$SERVICE_NAME" ]]; then
+            echo "Error: No service name provided"
+            exit 1
+          fi
+          echo "Validating service: $SERVICE_NAME"
+
+      - name: Delete service directories
+        env:
+          SERVICE_NAME: ${{ github.event.client_payload.service_name }}
+        run: |
+          echo "Attempting to delete directories named $SERVICE_NAME under pipelines"
+          DELETED_DIRS=$(find pipelines -type d -name "$SERVICE_NAME" -exec rm -rf {} +)
+          if [ -z "$DELETED_DIRS" ]; then
+            echo "No directories found to delete."
+            exit 0
+          else
+            echo "Deleted the following directories: $DELETED_DIRS"
+          fi
+          
+      - name: Commit and push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SERVICE_NAME: ${{ github.event.client_payload.service_name }}
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          
+          git add .
+          git diff --quiet || git commit -m "Remove $SERVICE_NAME service from pipelines"
+          git push
