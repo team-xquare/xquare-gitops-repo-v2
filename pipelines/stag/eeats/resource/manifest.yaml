@@ -179,6 +179,7 @@ spec:
   rolloutRestartTargets:
     - kind: Deployment
       name: eeats-stag
+  type: kv-v1
 ---
 # Source: applications/templates/vpa.yaml
 apiVersion: autoscaling.k8s.io/v1
