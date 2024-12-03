@@ -163,7 +163,7 @@ spec:
 ---
 # Source: applications/templates/vaultsecret.yaml
 apiVersion: secrets.hashicorp.com/v1beta1
-kind: VaultDynamicSecret
+kind: VaultStaticSecret
 metadata:
   name: founderz-prod-secret
   namespace: founderz-prod
@@ -173,7 +173,9 @@ spec:
   destination:
     name: founderz-prod
     create: true
+  hmacSecretData: true
   vaultAuthRef: founderz-prod/founderz-prod-auth
+  refreshAfter: 3m
   rolloutRestartTargets:
     - kind: Deployment
       name: founderz-prod

@@ -164,7 +164,7 @@ spec:
 ---
 # Source: applications/templates/vaultsecret.yaml
 apiVersion: secrets.hashicorp.com/v1beta1
-kind: VaultDynamicSecret
+kind: VaultStaticSecret
 metadata:
   name: qint-prod-secret
   namespace: info-prod
@@ -174,7 +174,9 @@ spec:
   destination:
     name: qint-prod
     create: true
+  hmacSecretData: true
   vaultAuthRef: info-prod/qint-prod-auth
+  refreshAfter: 3m
   rolloutRestartTargets:
     - kind: Deployment
       name: qint-prod

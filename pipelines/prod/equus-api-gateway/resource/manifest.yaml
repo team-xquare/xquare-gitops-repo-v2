@@ -164,7 +164,7 @@ spec:
 ---
 # Source: applications/templates/vaultsecret.yaml
 apiVersion: secrets.hashicorp.com/v1beta1
-kind: VaultDynamicSecret
+kind: VaultStaticSecret
 metadata:
   name: equus-api-gateway-prod-secret
   namespace: entry-prod
@@ -174,7 +174,9 @@ spec:
   destination:
     name: equus-api-gateway-prod
     create: true
+  hmacSecretData: true
   vaultAuthRef: entry-prod/equus-api-gateway-prod-auth
+  refreshAfter: 3m
   rolloutRestartTargets:
     - kind: Deployment
       name: equus-api-gateway-prod

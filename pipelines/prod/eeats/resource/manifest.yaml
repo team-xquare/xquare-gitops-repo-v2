@@ -163,7 +163,7 @@ spec:
 ---
 # Source: applications/templates/vaultsecret.yaml
 apiVersion: secrets.hashicorp.com/v1beta1
-kind: VaultDynamicSecret
+kind: VaultStaticSecret
 metadata:
   name: eeats-prod-secret
   namespace: eeats-prod
@@ -173,7 +173,9 @@ spec:
   destination:
     name: eeats-prod
     create: true
+  hmacSecretData: true
   vaultAuthRef: eeats-prod/eeats-prod-auth
+  refreshAfter: 3m
   rolloutRestartTargets:
     - kind: Deployment
       name: eeats-prod

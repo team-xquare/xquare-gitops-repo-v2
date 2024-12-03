@@ -164,7 +164,7 @@ spec:
 ---
 # Source: applications/templates/vaultsecret.yaml
 apiVersion: secrets.hashicorp.com/v1beta1
-kind: VaultDynamicSecret
+kind: VaultStaticSecret
 metadata:
   name: daemawiki-stag-secret
   namespace: daemawiki-stag
@@ -174,7 +174,9 @@ spec:
   destination:
     name: daemawiki-stag
     create: true
+  hmacSecretData: true
   vaultAuthRef: daemawiki-stag/daemawiki-stag-auth
+  refreshAfter: 3m
   rolloutRestartTargets:
     - kind: Deployment
       name: daemawiki-stag

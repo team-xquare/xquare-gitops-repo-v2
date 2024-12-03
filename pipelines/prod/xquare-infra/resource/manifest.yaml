@@ -167,7 +167,7 @@ spec:
 ---
 # Source: applications/templates/vaultsecret.yaml
 apiVersion: secrets.hashicorp.com/v1beta1
-kind: VaultDynamicSecret
+kind: VaultStaticSecret
 metadata:
   name: xquare-infra-prod-secret
   namespace: xquare-prod
@@ -177,7 +177,9 @@ spec:
   destination:
     name: xquare-infra-prod
     create: true
+  hmacSecretData: true
   vaultAuthRef: xquare-prod/xquare-infra-prod-auth
+  refreshAfter: 3m
   rolloutRestartTargets:
     - kind: Deployment
       name: xquare-infra-prod
