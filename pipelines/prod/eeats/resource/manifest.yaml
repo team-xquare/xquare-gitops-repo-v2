@@ -125,7 +125,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: eeats-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/eeats-prod:prod-pry56lgh
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/eeats-prod:prod-4a7g3zw7
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
