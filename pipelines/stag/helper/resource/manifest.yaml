@@ -164,7 +164,7 @@ spec:
 ---
 # Source: applications/templates/vaultsecret.yaml
 apiVersion: secrets.hashicorp.com/v1beta1
-kind: VaultDynamicSecret
+kind: VaultStaticSecret
 metadata:
   name: helper-stag-secret
   namespace: helper-stag
@@ -174,7 +174,9 @@ spec:
   destination:
     name: helper-stag
     create: true
+  hmacSecretData: true
   vaultAuthRef: helper-stag/helper-stag-auth
+  refreshAfter: 3m
   rolloutRestartTargets:
     - kind: Deployment
       name: helper-stag
