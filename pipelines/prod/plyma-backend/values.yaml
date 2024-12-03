@@ -1,0 +1,10 @@
+club: nonamed
+name: plyma-backend
+organization: nonamed-plyma
+repository: Plyma_Backend
+branch: main
+environment: prod
+containerPort: 8080
+domain: plyma.xquare.app
+language: java
+critical_service: false
