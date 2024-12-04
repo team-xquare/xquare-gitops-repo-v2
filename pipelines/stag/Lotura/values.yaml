@@ -1,0 +1,10 @@
+club: nonamed
+name: Lotura
+organization: team-osj
+repository: Lotura_BackEnd_V2
+branch: develop
+environment: stag
+containerPort: 3000
+domain: lotura-stag.xquare.app
+language: javascript
+critical_service: false
