@@ -1,0 +1,10 @@
+club: nonamed
+name: lotura
+organization: team-osj
+repository: Lotura_BackEnd_V2
+branch: main
+environment: prod
+containerPort: 3000
+domain: lotura-prod.xquare.app
+language: javascript
+critical_service: false
