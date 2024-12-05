@@ -179,7 +179,7 @@ spec:
     create: true
   hmacSecretData: true
   vaultAuthRef: xquare-prod/xquare-infra-prod-auth
-  refreshAfter: 3m
+  refreshAfter: 1m
   rolloutRestartTargets:
     - kind: Deployment
       name: xquare-infra-prod
