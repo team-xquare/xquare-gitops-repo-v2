@@ -176,7 +176,7 @@ spec:
     create: true
   hmacSecretData: true
   vaultAuthRef: nonamed-prod/plyma-backend-prod-auth
-  refreshAfter: 3m
+  refreshAfter: 1m
   rolloutRestartTargets:
     - kind: Deployment
       name: plyma-backend-prod

@@ -176,7 +176,7 @@ spec:
     create: true
   hmacSecretData: true
   vaultAuthRef: founderz-prod/founderz-backend-prod-auth
-  refreshAfter: 3m
+  refreshAfter: 1m
   rolloutRestartTargets:
     - kind: Deployment
       name: founderz-backend-prod

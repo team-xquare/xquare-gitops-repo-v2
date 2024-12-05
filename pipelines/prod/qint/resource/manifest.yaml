@@ -176,7 +176,7 @@ spec:
     create: true
   hmacSecretData: true
   vaultAuthRef: info-prod/qint-prod-auth
-  refreshAfter: 3m
+  refreshAfter: 1m
   rolloutRestartTargets:
     - kind: Deployment
       name: qint-prod

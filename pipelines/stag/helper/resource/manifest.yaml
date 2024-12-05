@@ -176,7 +176,7 @@ spec:
     create: true
   hmacSecretData: true
   vaultAuthRef: helper-stag/helper-stag-auth
-  refreshAfter: 3m
+  refreshAfter: 1m
   rolloutRestartTargets:
     - kind: Deployment
       name: helper-stag

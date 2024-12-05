@@ -176,7 +176,7 @@ spec:
     create: true
   hmacSecretData: true
   vaultAuthRef: entry-prod/equus-user-prod-auth
-  refreshAfter: 3m
+  refreshAfter: 1m
   rolloutRestartTargets:
     - kind: Deployment
       name: equus-user-prod

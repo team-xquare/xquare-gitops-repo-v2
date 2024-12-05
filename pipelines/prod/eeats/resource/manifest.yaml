@@ -175,7 +175,7 @@ spec:
     create: true
   hmacSecretData: true
   vaultAuthRef: eeats-prod/eeats-prod-auth
-  refreshAfter: 3m
+  refreshAfter: 1m
   rolloutRestartTargets:
     - kind: Deployment
       name: eeats-prod
