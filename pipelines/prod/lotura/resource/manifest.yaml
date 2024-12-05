@@ -1,0 +1,246 @@
+---
+# Source: applications/templates/poddistruptionbudget.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  namespace: nonamed-prod
+  name: lotura-prod
+spec:
+  maxUnavailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: lotura-prod
+---
+# Source: applications/templates/vaultsecret.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: lotura-prod-account
+  namespace: nonamed-prod
+---
+# Source: applications/templates/elastic-agent-pvc.yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: build-agent-storage-class
+  namespace: gocd
+provisioner: ebs.csi.aws.com
+parameters:
+  type: gp3
+  iops: "3000"
+  throughput: "125"
+  fsType: ext4
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+---
+# Source: applications/templates/elastic-agent-pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: gocd
+  name: lotura-prod-docker-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20G
+  storageClassName: build-agent-storage-class
+---
+# Source: applications/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: nonamed-prod
+  name: lotura-prod
+  labels:
+    app: lotura-prod
+    project: lotura
+    environment: prod
+spec:
+  type: ClusterIP
+  selector:
+    app: lotura-prod
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3000
+      protocol: TCP
+    - name: port
+      port: 3000
+      targetPort: 3000
+      protocol: TCP
+---
+# Source: applications/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: nonamed-prod
+  name: lotura-prod
+  labels:
+    app: lotura-prod
+    project: lotura
+    test: test
+    environment: prod
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: lotura-prod
+  template:
+    metadata:      
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "false"
+        sidecar.istio.io/proxyCPU: "5m"
+        sidecar.istio.io/proxyMemory: "128Mi"
+      labels:
+        app: lotura-prod
+        project: lotura
+    spec:
+      serviceAccountName: lotura-prod-account
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - lotura-prod
+              topologyKey: "kubernetes.io/hostname"
+      nodeSelector:
+        Karpenter: enabled
+      tolerations:
+        - effect: "NoSchedule"
+          key: xquare/server
+          operator: "Equal"
+          value: "true"
+      terminationGracePeriodSeconds: 120
+      containers:
+        - name: lotura-prod
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/lotura-prod:prod-ol6l1jee
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          envFrom:
+          - secretRef:
+              name: lotura-prod
+          resources:
+            requests:
+              memory: "500Mi"
+              cpu: "20m"
+              ephemeral-storage: "20Mi"
+            limits:
+              memory: "2Gi"
+          readinessProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            successThreshold: 3
+---
+# Source: applications/templates/vaultsecret.yaml
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: lotura-prod-auth
+  namespace: nonamed-prod
+spec:
+  method: kubernetes
+  mount: kubernetes
+  kubernetes:
+    role: xquare
+    serviceAccount: lotura-prod-account
+    audiences:
+      - vault
+---
+# Source: applications/templates/vaultsecret.yaml
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: lotura-prod-secret
+  namespace: nonamed-prod
+spec:
+  mount: xquare-kv
+  path: lotura-prod
+  destination:
+    name: lotura-prod
+    create: true
+  hmacSecretData: true
+  vaultAuthRef: nonamed-prod/lotura-prod-auth
+  refreshAfter: 1m
+  rolloutRestartTargets:
+    - kind: Deployment
+      name: lotura-prod
+  type: kv-v1
+---
+# Source: applications/templates/vpa.yaml
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: lotura-prod-vpa
+  namespace: nonamed-prod
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind:       Deployment
+    name:       lotura-prod
+  updatePolicy:
+    updateMode: "Auto"
+  resourcePolicy:
+    containerPolicies:
+      - containerName: "*"
+        controlledResources: [ "memory" ]
+---
+# Source: applications/templates/virtual-service.yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: lotura-prod-domain-ingress
+  labels:
+    app.kubernetes.io/instance: xquare-ingress
+  namespace: nonamed-prod
+spec:
+  gateways:
+    - istio-system/xquare-ingressgateway
+  hosts:
+    - lotura-prod.xquare.app
+  http:
+    - name: lotura
+      route:
+        - destination:
+            host: 'lotura-prod.nonamed-prod.svc.cluster.local'
+            port:
+              number: 3000
+      corsPolicy:
+        allowOrigins:
+          - regex: ".*"
+        allowMethods:
+          - POST
+          - GET
+          - PUT
+          - PATCH
+          - DELETE
+          - OPTIONS
+        allowCredentials: true
+        allowHeaders:
+          - content-type
+          - authorization
+          - accept
+          - accept-encoding
+          - Refresh-Token
+          - X-Not-Using-Xquare-Auth
+          - Oauth-Token
+          - oa-token
+          - Request-User-Id
+          - Request-User-Role
+          - X-Refresh-Token
+          - x-identifier
+        maxAge: "24h"
