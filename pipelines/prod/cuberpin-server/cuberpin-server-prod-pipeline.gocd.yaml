@@ -9,7 +9,7 @@ pipelines:
     label_template: "${git[:7]}"
     materials:
       git:
-        git: https://github.com/CuberLabs/cuberpin-server
+        git: https://${CUBERPIN_GIT_USERNAME}:${CUBERPIN_GIT_TOKEN}@github.com/CuberLabs/cuberpin-server.git
         shallow_clone: false
         auto_update: true
         branch: main
