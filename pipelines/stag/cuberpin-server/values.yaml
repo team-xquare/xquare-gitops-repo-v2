@@ -1,0 +1,10 @@
+club: cuberlabs
+name: cuberpin-server
+organization: CuberLabs
+repository: cuberpin-server
+branch: develop
+environment: stag
+containerPort: 8080
+domain: cuberpin-server-stag.xquare.app
+language: java
+critical_service: false
