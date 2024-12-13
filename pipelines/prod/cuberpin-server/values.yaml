@@ -1,0 +1,10 @@
+club: cuberlabs
+name: cuberpin-server
+organization: CuberLabs
+repository: cuberpin-server
+branch: main
+environment: prod
+containerPort: 8080
+domain: cuberpin-server.xquare.app
+language: java
+critical_service: false
