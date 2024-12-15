@@ -2,22 +2,22 @@
 # Source: gocd/templates/pipeline.yaml
 format_version: 11
 pipelines:
-  build-cuberpin-server-prod:
+  build-mmmetrics-api-stag:
     group: xquare
     environment_variables:
 
     label_template: "${git[:7]}"
     materials:
       git:
-        git: https://github.com/CuberLabs/cuberpin-server
+        git: https://github.com/MMMetrics/MMM-api
         shallow_clone: false
         auto_update: true
-        branch: main
+        branch: dev
     stages:
       - build:
           jobs:
             build:
-              elastic_profile_id: cuberpin-server-prod-agent-profile
+              elastic_profile_id: mmmetrics-api-stag-agent-profile
               artifacts:
                 - build:
                     source: build_result.env
@@ -28,13 +28,13 @@ pipelines:
                     arguments:
                       - -c
                       - |
-                        curl -o template.json https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/pipelines/prod/cuberpin-server/template.json
+                        curl -o template.json https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/pipelines/stag/mmmetrics-api/template.json
 
                         curl -o docker_build.sh https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/script/docker_build.sh
-                        curl -o Dockerfile https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/pipelines/prod/cuberpin-server/Dockerfile
+                        curl -o Dockerfile https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/pipelines/stag/mmmetrics-api/Dockerfile
                         chmod +x docker_build.sh
 
-                        ./docker_build.sh prod cuberpin-server "$(cat template.json)"
+                        ./docker_build.sh stag mmmetrics-api "$(cat template.json)"
       - deploy:
           jobs:
             deploy:
@@ -58,6 +58,6 @@ pipelines:
 
                         curl -o resource_deploy.sh https://raw.githubusercontent.com/team-xquare/xquare-gitops-repo-v2/main/script/resource_deploy.sh
                         chmod +x resource_deploy.sh
-                        SANITIZED_NAME=$(echo cuberpin-server | sed 's/-/_/g')
+                        SANITIZED_NAME=$(echo mmmetrics-api | sed 's/-/_/g')
                         RESOURCE_VAR_NAME="${SANITIZED_NAME}_REPOSITORY"
-                        ./resource_deploy.sh cuberpin-server prod ${!RESOURCE_VAR_NAME}
+                        ./resource_deploy.sh mmmetrics-api stag ${!RESOURCE_VAR_NAME}
