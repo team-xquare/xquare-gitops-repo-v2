@@ -1,0 +1,10 @@
+club: mmmetrics
+name: mmmetrics-api
+organization: MMMetrics
+repository: MMM-api
+branch: main
+environment: prod
+containerPort: 8080
+domain: mmm-api.xquare.app
+language: java
+critical_service: false
