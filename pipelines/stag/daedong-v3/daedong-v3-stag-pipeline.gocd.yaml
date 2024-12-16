@@ -2,7 +2,7 @@
 # Source: gocd/templates/pipeline.yaml
 format_version: 11
 pipelines:
-  build-daedong-v3-stag:
+  build-daedong-stag:
     group: xquare
     environment_variables:
 
