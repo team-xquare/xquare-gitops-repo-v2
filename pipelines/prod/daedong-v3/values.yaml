@@ -1,0 +1,10 @@
+club: f
+name: daedong-v3
+organization: Team-jeong-ho-kim
+repository: Daedongyeojido_BE_v3
+branch: main
+environment: prod
+containerPort: 8080
+domain: daedong.xquare.app
+language: java
+critical_service: false
