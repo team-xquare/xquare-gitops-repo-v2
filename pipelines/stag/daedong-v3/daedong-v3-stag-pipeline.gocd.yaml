@@ -2,7 +2,7 @@
 # Source: gocd/templates/pipeline.yaml
 format_version: 11
 pipelines:
-  build-daedong-stag:
+  build-daedong-v3-stag:
     group: xquare
     environment_variables:
 
@@ -12,7 +12,7 @@ pipelines:
         git: https://github.com/Team-jeong-ho-kim/Daedongyeojido_BE_v3
         shallow_clone: false
         auto_update: true
-        branch: develop
+        branch: 
     stages:
       - build:
           jobs:
