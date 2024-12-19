@@ -1,10 +1,10 @@
-club: sillok
+club: daedongyeojido
 name: sillok
-organization: 대동여지도
+organization: Team-jeong-ho-kim
 repository: Daedongyeojido_BE_v3
-branch: 
+branch: develop/sillok
 environment: stag
-containerPort: 0
-domain: .xquare.app
+containerPort: 8080
+domain: sillok-stag-server.xquare.app
 language: java
 critical_service: false
