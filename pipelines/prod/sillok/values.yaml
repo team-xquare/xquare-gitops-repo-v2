@@ -1,0 +1,10 @@
+club: sillok
+name: sillok
+organization: 대동여지도
+repository: Daedongyeojido_BE_v3
+branch: develop/sillok
+environment: prod
+containerPort: 8080
+domain: sillok.xquare.app
+language: java
+critical_service: false
