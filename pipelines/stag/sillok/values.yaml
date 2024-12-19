@@ -1,0 +1,10 @@
+club: sillok
+name: sillok
+organization: 대동여지도
+repository: Daedongyeojido_BE_v3
+branch: 
+environment: stag
+containerPort: 0
+domain: .xquare.app
+language: java
+critical_service: false
