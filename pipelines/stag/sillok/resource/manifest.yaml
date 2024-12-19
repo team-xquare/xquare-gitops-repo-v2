@@ -1,0 +1,247 @@
+---
+# Source: applications/templates/poddistruptionbudget.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  namespace: daedongyeojido-stag
+  name: sillok-stag
+spec:
+  maxUnavailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sillok-stag
+---
+# Source: applications/templates/vaultsecret.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sillok-stag-account
+  namespace: daedongyeojido-stag
+---
+# Source: applications/templates/elastic-agent-pvc.yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: build-agent-storage-class
+  namespace: gocd
+provisioner: ebs.csi.aws.com
+parameters:
+  type: gp3
+  iops: "3000"
+  throughput: "125"
+  fsType: ext4
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+---
+# Source: applications/templates/elastic-agent-pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: gocd
+  name: sillok-stag-docker-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20G
+  storageClassName: build-agent-storage-class
+---
+# Source: applications/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: daedongyeojido-stag
+  name: sillok-stag
+  labels:
+    app: sillok-stag
+    project: sillok
+    environment: stag
+spec:
+  type: ClusterIP
+  selector:
+    app: sillok-stag
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      protocol: TCP
+    - name: port
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+---
+# Source: applications/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: daedongyeojido-stag
+  name: sillok-stag
+  labels:
+    app: sillok-stag
+    project: sillok
+    test: test
+    environment: stag
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: sillok-stag
+  template:
+    metadata:      
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "false"
+        sidecar.istio.io/proxyCPU: "5m"
+        sidecar.istio.io/proxyMemory: "128Mi"
+        instrumentation.opentelemetry.io/inject-java: "true"
+      labels:
+        app: sillok-stag
+        project: sillok
+    spec:
+      serviceAccountName: sillok-stag-account
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - sillok-stag
+              topologyKey: "kubernetes.io/hostname"
+      nodeSelector:
+        Karpenter: enabled
+      tolerations:
+        - effect: "NoSchedule"
+          key: xquare/server
+          operator: "Equal"
+          value: "true"
+      terminationGracePeriodSeconds: 120
+      containers:
+        - name: sillok-stag
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/sillok-stag:stag-7w9wppzj
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          envFrom:
+          - secretRef:
+              name: sillok-stag
+          resources:
+            requests:
+              memory: "500Mi"
+              cpu: "20m"
+              ephemeral-storage: "20Mi"
+            limits:
+              memory: "2Gi"
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            successThreshold: 3
+---
+# Source: applications/templates/vaultsecret.yaml
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: sillok-stag-auth
+  namespace: daedongyeojido-stag
+spec:
+  method: kubernetes
+  mount: kubernetes
+  kubernetes:
+    role: xquare
+    serviceAccount: sillok-stag-account
+    audiences:
+      - vault
+---
+# Source: applications/templates/vaultsecret.yaml
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: sillok-stag-secret
+  namespace: daedongyeojido-stag
+spec:
+  mount: xquare-kv
+  path: sillok-stag
+  destination:
+    name: sillok-stag
+    create: true
+  hmacSecretData: true
+  vaultAuthRef: daedongyeojido-stag/sillok-stag-auth
+  refreshAfter: 1m
+  rolloutRestartTargets:
+    - kind: Deployment
+      name: sillok-stag
+  type: kv-v1
+---
+# Source: applications/templates/vpa.yaml
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: sillok-stag-vpa
+  namespace: daedongyeojido-stag
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind:       Deployment
+    name:       sillok-stag
+  updatePolicy:
+    updateMode: "Auto"
+  resourcePolicy:
+    containerPolicies:
+      - containerName: "*"
+        controlledResources: [ "memory" ]
+---
+# Source: applications/templates/virtual-service.yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: sillok-stag-domain-ingress
+  labels:
+    app.kubernetes.io/instance: xquare-ingress
+  namespace: daedongyeojido-stag
+spec:
+  gateways:
+    - istio-system/xquare-ingressgateway
+  hosts:
+    - sillok-stag-server.xquare.app
+  http:
+    - name: sillok
+      route:
+        - destination:
+            host: 'sillok-stag.daedongyeojido-stag.svc.cluster.local'
+            port:
+              number: 8080
+      corsPolicy:
+        allowOrigins:
+          - regex: ".*"
+        allowMethods:
+          - POST
+          - GET
+          - PUT
+          - PATCH
+          - DELETE
+          - OPTIONS
+        allowCredentials: true
+        allowHeaders:
+          - content-type
+          - authorization
+          - accept
+          - accept-encoding
+          - Refresh-Token
+          - X-Not-Using-Xquare-Auth
+          - Oauth-Token
+          - oa-token
+          - Request-User-Id
+          - Request-User-Role
+          - X-Refresh-Token
+          - x-identifier
+        maxAge: "24h"
