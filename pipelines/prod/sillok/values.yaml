@@ -1,10 +1,10 @@
-club: sillok
+club: daedongyeojido
 name: sillok
-organization: 대동여지도
+organization: Team-jeong-ho-kim
 repository: Daedongyeojido_BE_v3
-branch: develop/sillok
+branch: main
 environment: prod
 containerPort: 8080
-domain: sillok.xquare.app
+domain: sillok-server.xquare.app
 language: java
 critical_service: false
