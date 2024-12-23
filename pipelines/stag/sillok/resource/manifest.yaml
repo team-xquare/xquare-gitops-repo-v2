@@ -126,7 +126,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: sillok-stag
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/sillok-stag:stag-znqfo11d
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/sillok-stag:stag-ffmpcqj1
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
