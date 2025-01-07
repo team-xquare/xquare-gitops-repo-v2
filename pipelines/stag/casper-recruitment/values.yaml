@@ -1,0 +1,10 @@
+club: entry
+name: casper-recruitment
+organization: EntryDSM
+repository: Casper-Recruitment
+branch: main
+environment: stag
+containerPort: 8080
+domain: stag-entry-casper-recruitment.xquare.app
+language: java
+critical_service: false
