@@ -14,6 +14,6 @@ FROM amazoncorretto:17
 
 ENV TZ=Asia/Seoul
 
-COPY --from=build /appdist /app.jar
+COPY --from=build /appbuild/libs/ /app.jar
 
 ENTRYPOINT ["java", "-jar", "/app.jar"]
