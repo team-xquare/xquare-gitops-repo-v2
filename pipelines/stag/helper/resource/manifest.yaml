@@ -126,7 +126,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: helper-stag
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/helper-stag:stag-c633e8yo
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/helper-stag:stag-5ud9xj46
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
