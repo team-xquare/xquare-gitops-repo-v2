@@ -1,0 +1,10 @@
+club: mozu
+name: mozu-server
+organization: team-mozu
+repository: mozu-BE
+branch: main
+environment: prod
+containerPort: 3000
+domain: mozu-prod.xquare.app
+language: javascript
+critical_service: false
