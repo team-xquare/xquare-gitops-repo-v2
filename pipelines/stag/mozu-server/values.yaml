@@ -1,0 +1,10 @@
+club: mozu
+name: mozu-server
+organization: team-mozu
+repository: mozu-BE
+branch: develop
+environment: stag
+containerPort: 3000
+domain: mozu-stag.xquare.app
+language: javascript
+critical_service: false
