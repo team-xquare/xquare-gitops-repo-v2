@@ -1,1 +1,1 @@
-{"node_version":"20.16","build_commands":["yarn && yarn build"],"builder":"node","build_dir":"/","command":"nest start","port":3000}
+{"node_version":"20.16","build_commands":["npm install && npm run build"],"builder":"node","build_dir":"/","command":"npm run start","port":3000}
