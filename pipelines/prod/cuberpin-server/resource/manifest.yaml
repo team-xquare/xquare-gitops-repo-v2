@@ -126,7 +126,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: cuberpin-server-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/cuberpin-server-prod:prod-tf35mll3
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/cuberpin-server-prod:prod-9ohh5vsl
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
