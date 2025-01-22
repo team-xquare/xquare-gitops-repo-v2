@@ -4,7 +4,7 @@ FROM node:20.16 AS build
 COPY . .
 
 
-RUN nest start
+RUN yarn && yarn build
 
 
 FROM node:20.16
