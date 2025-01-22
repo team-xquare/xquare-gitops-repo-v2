@@ -6,6 +6,6 @@ branch: main
 environment: prod
 containerPort: 8080
 domain: cuberpin-server.xquare.app
-critical_service: false
+critical_service: true
 language: java
 
