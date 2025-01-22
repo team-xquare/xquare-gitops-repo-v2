@@ -125,7 +125,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: mozu-server-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/mozu-server-prod:prod-ohvpdd87
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/mozu-server-prod:prod-ebxznkdj
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
