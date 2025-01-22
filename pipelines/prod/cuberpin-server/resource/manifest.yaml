@@ -84,7 +84,7 @@ metadata:
     test: test
     environment: prod
 spec:
-  replicas: 1
+  replicas: 2
   revisionHistoryLimit: 0
   strategy:
     rollingUpdate:
@@ -120,7 +120,7 @@ spec:
         Karpenter: enabled
       tolerations:
         - effect: "NoSchedule"
-          key: xquare/server
+          key: xquare/critical_service
           operator: "Equal"
           value: "true"
       terminationGracePeriodSeconds: 120
