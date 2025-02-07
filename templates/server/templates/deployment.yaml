@@ -34,9 +34,9 @@ spec:
         {{- if eq .Values.language "java"}}
         instrumentation.opentelemetry.io/inject-java: "true"
         {{- end }}
-        { { - if eq .Values.language "nodejs" } }
+        {{- if eq .Values.language "nodejs" }}
         instrumentation.opentelemetry.io/inject-nodejs: "true"
-        { { - end } }
+        {{- end }}
       labels:
         app: {{ $fullname }}
         project: {{ .Values.name }}
