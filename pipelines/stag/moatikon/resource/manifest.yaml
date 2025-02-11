@@ -100,6 +100,7 @@ spec:
         sidecar.istio.io/rewriteAppHTTPProbers: "false"
         sidecar.istio.io/proxyCPU: "5m"
         sidecar.istio.io/proxyMemory: "128Mi"
+        instrumentation.opentelemetry.io/inject-nodejs: "true"
       labels:
         app: moatikon-stag
         project: moatikon
@@ -211,7 +212,7 @@ spec:
   gateways:
     - istio-system/xquare-ingressgateway
   hosts:
-    - moatikon.xquare.app
+    - moatikon-stag.xquare.app
   http:
     - name: moatikon
       route:
