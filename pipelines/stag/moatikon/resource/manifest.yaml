@@ -65,11 +65,11 @@ spec:
   ports:
     - name: http
       port: 80
-      targetPort: 3000
+      targetPort: 8764
       protocol: TCP
     - name: port
-      port: 3000
-      targetPort: 3000
+      port: 8764
+      targetPort: 8764
       protocol: TCP
 ---
 # Source: applications/templates/deployment.yaml
@@ -125,10 +125,10 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: moatikon-stag
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/moatikon-stag:stag-uwl4a607
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/moatikon-stag:stag-ysfym04q
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 3000
+            - containerPort: 8764
           envFrom:
           - secretRef:
               name: moatikon-stag
@@ -141,7 +141,7 @@ spec:
               memory: "2Gi"
           readinessProbe:
             tcpSocket:
-              port: 3000
+              port: 8764
             initialDelaySeconds: 20
             periodSeconds: 10
             successThreshold: 3
@@ -218,7 +218,7 @@ spec:
         - destination:
             host: 'moatikon-stag.moatikon-stag.svc.cluster.local'
             port:
-              number: 3000
+              number: 8764
       corsPolicy:
         allowOrigins:
           - regex: ".*"
