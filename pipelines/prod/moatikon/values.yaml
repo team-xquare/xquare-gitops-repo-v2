@@ -1,0 +1,10 @@
+club: moatikon
+name: moatikon
+organization: moatikon
+repository: moatikon_backend_v2
+branch: main
+environment: prod
+containerPort: 3000
+domain: moatikon.xquare.app
+language: javascript
+critical_service: false
