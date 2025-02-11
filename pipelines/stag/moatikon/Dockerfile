@@ -11,5 +11,5 @@ FROM node:22.5.1
 
 COPY --from=build . .
 
-EXPOSE 8765
+EXPOSE 8764
 CMD ["npm", "run", "start"]
