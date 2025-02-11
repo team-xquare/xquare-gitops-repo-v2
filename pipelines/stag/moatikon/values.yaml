@@ -6,5 +6,5 @@ branch: develop
 environment: stag
 containerPort: 3000
 domain: moatikon.xquare.app
-language: javascript
+language: nodejs
 critical_service: false
