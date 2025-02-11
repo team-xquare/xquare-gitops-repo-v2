@@ -65,11 +65,11 @@ spec:
   ports:
     - name: http
       port: 80
-      targetPort: 3000
+      targetPort: 8765
       protocol: TCP
     - name: port
-      port: 3000
-      targetPort: 3000
+      port: 8765
+      targetPort: 8765
       protocol: TCP
 ---
 # Source: applications/templates/deployment.yaml
@@ -100,7 +100,6 @@ spec:
         sidecar.istio.io/rewriteAppHTTPProbers: "false"
         sidecar.istio.io/proxyCPU: "5m"
         sidecar.istio.io/proxyMemory: "128Mi"
-        instrumentation.opentelemetry.io/inject-nodejs: "true"
       labels:
         app: moatikon-prod
         project: moatikon
@@ -126,10 +125,10 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: moatikon-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/moatikon-prod:prod-oh8p9r49
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/moatikon-prod:prod-h4cwt0qh
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 3000
+            - containerPort: 8765
           envFrom:
           - secretRef:
               name: moatikon-prod
@@ -142,7 +141,7 @@ spec:
               memory: "2Gi"
           readinessProbe:
             tcpSocket:
-              port: 3000
+              port: 8765
             initialDelaySeconds: 20
             periodSeconds: 10
             successThreshold: 3
@@ -219,7 +218,7 @@ spec:
         - destination:
             host: 'moatikon-prod.moatikon-prod.svc.cluster.local'
             port:
-              number: 3000
+              number: 8765
       corsPolicy:
         allowOrigins:
           - regex: ".*"
