@@ -4,7 +4,7 @@ organization: moatikon
 repository: moatikon_backend_v2
 branch: main
 environment: prod
-containerPort: 3000
+containerPort: 8765
 domain: moatikon.xquare.app
-language: nodejs
+language: javascript
 critical_service: false
