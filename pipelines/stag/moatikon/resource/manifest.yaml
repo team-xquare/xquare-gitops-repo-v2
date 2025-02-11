@@ -100,7 +100,6 @@ spec:
         sidecar.istio.io/rewriteAppHTTPProbers: "false"
         sidecar.istio.io/proxyCPU: "5m"
         sidecar.istio.io/proxyMemory: "128Mi"
-        instrumentation.opentelemetry.io/inject-nodejs: "true"
       labels:
         app: moatikon-stag
         project: moatikon
@@ -126,7 +125,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: moatikon-stag
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/moatikon-stag:stag-x2mvx1hv
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/moatikon-stag:stag-uwl4a607
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
