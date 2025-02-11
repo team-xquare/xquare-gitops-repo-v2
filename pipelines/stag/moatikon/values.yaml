@@ -5,6 +5,6 @@ repository: moatikon_backend_v2
 branch: develop
 environment: stag
 containerPort: 8764
-domain: moatikon.xquare.app
-language: javascript
+domain: moatikon-stag.xquare.app
+language: nodejs
 critical_service: false
