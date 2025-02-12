@@ -4,7 +4,7 @@ FROM node:20.16 AS build
 COPY . .
 
 
-RUN nest start
+RUN npm install && npm run build
 
 
 FROM node:20.16
@@ -12,4 +12,4 @@ FROM node:20.16
 COPY --from=build . .
 
 EXPOSE 3000
-CMD ["nest", "start"]
+CMD ["npm", "run", "start"]
