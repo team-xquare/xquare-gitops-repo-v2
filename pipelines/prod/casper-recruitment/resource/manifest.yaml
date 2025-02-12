@@ -126,7 +126,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: casper-recruitment-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/casper-recruitment-prod:prod-lhmg99cp
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/casper-recruitment-prod:prod-d6aa7mf7
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
