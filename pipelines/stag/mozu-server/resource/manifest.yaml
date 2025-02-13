@@ -126,7 +126,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: mozu-server-stag
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/mozu-server-stag:stag-nno7iq3l
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/mozu-server-stag:stag-z80gu903
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
