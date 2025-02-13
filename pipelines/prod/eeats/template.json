@@ -1,1 +1,0 @@
-{"node_version":"22.5.1","build_commands":["npm run build"],"builder":"node","build_dir":"/","command":"npm run start","port":3000}
