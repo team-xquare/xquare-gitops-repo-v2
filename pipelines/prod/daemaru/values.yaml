@@ -1,0 +1,10 @@
+club: daemaru
+name: daemaru
+organization: daemaru
+repository: daemaru-backend
+branch: main
+environment: prod
+containerPort: 8080
+domain: daemaru.xquare.app
+language: java
+critical_service: false
