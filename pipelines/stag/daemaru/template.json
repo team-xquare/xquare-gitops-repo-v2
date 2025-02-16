@@ -1,1 +1,1 @@
-{"jdk_version":17,"output_dir":"daemaru-backend","builder":"gradle","build_dir":"/daemaru-backend","build_commands":["./gradlew build"]}
+{"jdk_version":17,"output_dir":"daemaru-backend","builder":"gradle","build_dir":"/","build_commands":["./gradlew build"]}
