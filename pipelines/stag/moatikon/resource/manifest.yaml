@@ -126,7 +126,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: moatikon-stag
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/moatikon-stag:stag-j13cmofe
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/moatikon-stag:stag-e591dzjp
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8764
