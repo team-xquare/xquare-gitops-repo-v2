@@ -5,6 +5,6 @@ repository: daemaru-backend
 branch: main
 environment: prod
 containerPort: 8080
-domain: daemaru.xquare.app
+domain: daemaru-server.xquare.app
 language: java
 critical_service: false
