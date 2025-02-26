@@ -2,9 +2,9 @@ club: daemaru
 name: daemaru
 organization: daemaru
 repository: daemaru-backend
-branch: main
+branch: develop
 environment: stag
 containerPort: 8080
-domain: dev.daemaru.xquare.app
+domain: daemaru-server-stag.xquare.app
 language: java
 critical_service: false
