@@ -126,7 +126,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: moatikon-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/moatikon-prod:prod-ja0x49oq
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/moatikon-prod:prod-b1044nvl
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8765
