@@ -4,7 +4,8 @@ FROM node:{{ node_version }} AS build
 COPY . .
 
 {% for command in build_commands %}
-RUN {{ command }}
+RUN --mount=type=cache,target=/root/.npm \
+    {{ command }}
 {% endfor %}
 
 FROM node:{{ node_version }}

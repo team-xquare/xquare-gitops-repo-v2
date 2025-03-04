@@ -4,7 +4,8 @@ FROM node:20.16 AS build
 COPY . .
 
 
-RUN npm install && npm run build
+RUN --mount=type=cache,target=/root/.npm \
+    npm install && npm run build
 
 
 FROM node:20.16
