@@ -2,7 +2,7 @@
 
 if ! command -v jinja2 &> /dev/null; then
     echo "Jinja2 is not installed. Installing..."
-    pip install jinja2-cli
+    pip3 install jinja2-cli
 fi
 
 PROJECT_ROOT="."
