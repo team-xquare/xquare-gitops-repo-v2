@@ -153,7 +153,7 @@ kind: DatadogDashboard
 metadata:
   name: casper-recruitment-prod-dashboard
 spec:
-  title: Test
+  title: casper-recruitment-prod-dashboard
   description: null
   widgets: |
     [
