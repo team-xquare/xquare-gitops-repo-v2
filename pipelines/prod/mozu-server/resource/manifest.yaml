@@ -59,7 +59,7 @@ metadata:
     project: mozu-server
     environment: prod
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: mozu-server-prod
   ports:
