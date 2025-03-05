@@ -59,7 +59,7 @@ metadata:
     project: mozu-server
     environment: stag
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: mozu-server-stag
   ports:
@@ -95,12 +95,13 @@ spec:
     matchLabels:
       app: mozu-server-stag
   template:
-    metadata:      
+    metadata:
       annotations:
         sidecar.istio.io/rewriteAppHTTPProbers: "false"
         sidecar.istio.io/proxyCPU: "5m"
         sidecar.istio.io/proxyMemory: "128Mi"
         instrumentation.opentelemetry.io/inject-nodejs: "true"
+        sidecar.istio.io/inject: "false"
       labels:
         app: mozu-server-stag
         project: mozu-server
@@ -131,8 +132,8 @@ spec:
           ports:
             - containerPort: 3000
           envFrom:
-          - secretRef:
-              name: mozu-server-stag
+            - secretRef:
+                name: mozu-server-stag
           resources:
             requests:
               memory: "500Mi"

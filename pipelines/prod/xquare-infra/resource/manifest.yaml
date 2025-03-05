@@ -99,7 +99,7 @@ spec:
     matchLabels:
       app: xquare-infra-prod
   template:
-    metadata:      
+    metadata:
       annotations:
         sidecar.istio.io/rewriteAppHTTPProbers: "false"
         sidecar.istio.io/proxyCPU: "5m"
@@ -134,8 +134,8 @@ spec:
           ports:
             - containerPort: 8080
           envFrom:
-          - secretRef:
-              name: xquare-infra-prod
+            - secretRef:
+                name: xquare-infra-prod
           resources:
             requests:
               memory: "500Mi"

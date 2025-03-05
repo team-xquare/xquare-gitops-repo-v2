@@ -95,7 +95,7 @@ spec:
     matchLabels:
       app: equus-api-gateway-prod
   template:
-    metadata:      
+    metadata:
       annotations:
         sidecar.istio.io/rewriteAppHTTPProbers: "false"
         sidecar.istio.io/proxyCPU: "5m"
@@ -131,8 +131,8 @@ spec:
           ports:
             - containerPort: 8080
           envFrom:
-          - secretRef:
-              name: equus-api-gateway-prod
+            - secretRef:
+                name: equus-api-gateway-prod
           resources:
             requests:
               memory: "500Mi"

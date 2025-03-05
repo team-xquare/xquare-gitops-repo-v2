@@ -95,7 +95,7 @@ spec:
     matchLabels:
       app: moatikon-prod
   template:
-    metadata:      
+    metadata:
       annotations:
         sidecar.istio.io/rewriteAppHTTPProbers: "false"
         sidecar.istio.io/proxyCPU: "5m"
@@ -131,8 +131,8 @@ spec:
           ports:
             - containerPort: 8765
           envFrom:
-          - secretRef:
-              name: moatikon-prod
+            - secretRef:
+                name: moatikon-prod
           resources:
             requests:
               memory: "500Mi"

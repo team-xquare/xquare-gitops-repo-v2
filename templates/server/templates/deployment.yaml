@@ -26,16 +26,19 @@ spec:
     matchLabels:
       app: {{ $fullname }}
   template:
-    metadata:      
+    metadata:
       annotations:
         sidecar.istio.io/rewriteAppHTTPProbers: "false"
         sidecar.istio.io/proxyCPU: "5m"
         sidecar.istio.io/proxyMemory: "128Mi"
-        {{- if eq .Values.language "java"}}
+        {{- if eq .Values.language "java" }}
         instrumentation.opentelemetry.io/inject-java: "true"
         {{- end }}
         {{- if eq .Values.language "nodejs" }}
         instrumentation.opentelemetry.io/inject-nodejs: "true"
+        {{- end }}
+        {{- if eq .Values.name "mozu-server" }}
+        sidecar.istio.io/inject: "false"
         {{- end }}
       labels:
         app: {{ $fullname }}
@@ -78,8 +81,8 @@ spec:
           ports:
             - containerPort: {{ .Values.containerPort }}
           envFrom:
-          - secretRef:
-              name: {{ $fullname }}
+            - secretRef:
+                name: {{ $fullname }}
           resources:
             requests:
               memory: "500Mi"

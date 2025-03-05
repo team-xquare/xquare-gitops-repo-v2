@@ -95,7 +95,7 @@ spec:
     matchLabels:
       app: qint-prod
   template:
-    metadata:      
+    metadata:
       annotations:
         sidecar.istio.io/rewriteAppHTTPProbers: "false"
         sidecar.istio.io/proxyCPU: "5m"
@@ -131,8 +131,8 @@ spec:
           ports:
             - containerPort: 8080
           envFrom:
-          - secretRef:
-              name: qint-prod
+            - secretRef:
+                name: qint-prod
           resources:
             requests:
               memory: "500Mi"
