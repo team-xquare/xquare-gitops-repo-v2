@@ -1,157 +1,8 @@
----
-# Source: applications/templates/poddistruptionbudget.yaml
-apiVersion: policy/v1
-kind: PodDisruptionBudget
-metadata:
-  namespace: helper-prod
-  name: helper-prod
-spec:
-  maxUnavailable: 0
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: helper-prod
----
-# Source: applications/templates/vaultsecret.yaml
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: helper-prod-account
-  namespace: helper-prod
----
-# Source: applications/templates/elastic-agent-pvc.yaml
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: build-agent-storage-class
-  namespace: gocd
-provisioner: ebs.csi.aws.com
-parameters:
-  type: gp3
-  iops: "3000"
-  throughput: "125"
-  fsType: ext4
-reclaimPolicy: Retain
-volumeBindingMode: WaitForFirstConsumer
-allowVolumeExpansion: true
----
-# Source: applications/templates/elastic-agent-pvc.yaml
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  namespace: gocd
-  name: helper-prod-docker-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 20G
-  storageClassName: build-agent-storage-class
----
-# Source: applications/templates/service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: helper-prod
-  name: helper-prod
-  labels:
-    app: helper-prod
-    project: helper
-    environment: prod
-spec:
-  type: ClusterIP
-  selector:
-    app: helper-prod
-  ports:
-    - name: http
-      port: 80
-      targetPort: 8080
-      protocol: TCP
-    - name: port
-      port: 8080
-      targetPort: 8080
-      protocol: TCP
----
-# Source: applications/templates/deployment.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: helper-prod
-  name: helper-prod
-  labels:
-    app: helper-prod
-    project: helper
-    test: test
-    environment: prod
-spec:
-  replicas: 1
-  revisionHistoryLimit: 0
-  strategy:
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 0
-    type: RollingUpdate
-  selector:
-    matchLabels:
-      app: helper-prod
-  template:
-    metadata:      
-      annotations:
-        sidecar.istio.io/rewriteAppHTTPProbers: "false"
-        sidecar.istio.io/proxyCPU: "5m"
-        sidecar.istio.io/proxyMemory: "128Mi"
-        instrumentation.opentelemetry.io/inject-java: "true"
-      labels:
-        app: helper-prod
-        project: helper
-    spec:
-      serviceAccountName: helper-prod-account
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                      - helper-prod
-              topologyKey: "kubernetes.io/hostname"
-      nodeSelector:
-        Karpenter: enabled
-      tolerations:
-        - effect: "NoSchedule"
-          key: xquare/server
-          operator: "Equal"
-          value: "true"
-      terminationGracePeriodSeconds: 120
-      containers:
-        - name: helper-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/helper-prod:prod-b3ssvidf
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 8080
-          envFrom:
-          - secretRef:
-              name: helper-prod
-          resources:
-            requests:
-              memory: "500Mi"
-              cpu: "20m"
-              ephemeral-storage: "20Mi"
-            limits:
-              memory: "2Gi"
-          readinessProbe:
-            tcpSocket:
-              port: 8080
-            initialDelaySeconds: 20
-            periodSeconds: 10
-            successThreshold: 3
----
-# Source: applications/templates/datadog-dashboard.yaml
+{{- $fullname := (printf "%s-%s" .Values.name .Values.environment) }}
 apiVersion: datadoghq.com/v1alpha1
 kind: DatadogDashboard
 metadata:
-  name: helper-prod-dashboard
+  name: {{ $fullname }}-dashboard
 spec:
   title: Test
   description: null
@@ -175,7 +26,7 @@ spec:
                 {
                   "name": "query1",
                   "data_source": "spans",
-                  "search": {"query": "service:helper-prod"},
+                  "search": {"query": "service:{{ $fullname }}"},
                   "indexes": ["*"],
                   "group_by": [],
                   "compute": {"aggregation": "count"},
@@ -208,7 +59,7 @@ spec:
                 {
                   "name": "query1",
                   "data_source": "spans",
-                  "search": {"query": "status:error service:helper-prod"},
+                  "search": {"query": "status:error service:{{ $fullname }}"},
                   "indexes": ["*"],
                   "group_by": [],
                   "compute": {"aggregation": "count"},
@@ -247,7 +98,7 @@ spec:
                 {
                   "name": "query1",
                   "data_source": "spans",
-                  "search": {"query": "service:helper-prod @duration:*"},
+                  "search": {"query": "service:{{ $fullname }} @duration:*"},
                   "indexes": ["*"],
                   "group_by": [],
                   "compute": {"aggregation": "pc99", "metric": "@duration"},
@@ -256,7 +107,7 @@ spec:
                 {
                   "name": "query2",
                   "data_source": "spans",
-                  "search": {"query": "service:helper-prod @duration:*"},
+                  "search": {"query": "service:{{ $fullname }} @duration:*"},
                   "indexes": ["*"],
                   "group_by": [],
                   "compute": {"aggregation": "pc98", "metric": "@duration"},
@@ -265,7 +116,7 @@ spec:
                 {
                   "name": "query3",
                   "data_source": "spans",
-                  "search": {"query": "service:helper-prod @duration:*"},
+                  "search": {"query": "service:{{ $fullname }} @duration:*"},
                   "indexes": ["*"],
                   "group_by": [],
                   "compute": {"aggregation": "pc95", "metric": "@duration"},
@@ -274,7 +125,7 @@ spec:
                 {
                   "name": "query4",
                   "data_source": "spans",
-                  "search": {"query": "service:helper-prod @duration:*"},
+                  "search": {"query": "service:{{ $fullname }} @duration:*"},
                   "indexes": ["*"],
                   "group_by": [],
                   "compute": {"aggregation": "pc90", "metric": "@duration"},
@@ -283,7 +134,7 @@ spec:
                 {
                   "name": "query5",
                   "data_source": "spans",
-                  "search": {"query": "service:helper-prod @duration:*"},
+                  "search": {"query": "service:{{ $fullname }} @duration:*"},
                   "indexes": ["*"],
                   "group_by": [],
                   "compute": {"aggregation": "pc75", "metric": "@duration"},
@@ -309,7 +160,7 @@ spec:
               "response_format": "event_list",
               "query": {
                 "data_source": "issue_stream",
-                "query_string": "service:helper-prod",
+                "query_string": "service:{{ $fullname }}",
                 "indexes": []
               },
               "columns": [
@@ -336,7 +187,7 @@ spec:
                 {
                   "name": "query1",
                   "data_source": "spans",
-                  "search": {"query": "service:helper-prod @duration:*"},
+                  "search": {"query": "service:{{ $fullname }} @duration:*"},
                   "indexes": ["*"],
                   "group_by": [
                     {
@@ -372,7 +223,7 @@ spec:
                 {
                   "name": "query1",
                   "data_source": "spans",
-                  "search": {"query": "service:helper-prod"},
+                  "search": {"query": "service:{{ $fullname }}"},
                   "indexes": ["*"],
                   "group_by": [
                     {
@@ -404,7 +255,7 @@ spec:
               "response_format": "event_list",
               "query": {
                 "data_source": "trace_stream",
-                "query_string": "service:helper-prod",
+                "query_string": "service:{{ $fullname }}",
                 "indexes": ["*"]
               },
               "columns": [
@@ -433,102 +284,3 @@ spec:
   layoutType: ordered
   notifyList: []
   reflowType: fixed
----
-# Source: applications/templates/vaultsecret.yaml
-apiVersion: secrets.hashicorp.com/v1beta1
-kind: VaultAuth
-metadata:
-  name: helper-prod-auth
-  namespace: helper-prod
-spec:
-  method: kubernetes
-  mount: kubernetes
-  kubernetes:
-    role: xquare
-    serviceAccount: helper-prod-account
-    audiences:
-      - vault
----
-# Source: applications/templates/vaultsecret.yaml
-apiVersion: secrets.hashicorp.com/v1beta1
-kind: VaultStaticSecret
-metadata:
-  name: helper-prod-secret
-  namespace: helper-prod
-spec:
-  mount: xquare-kv
-  path: helper-prod
-  destination:
-    name: helper-prod
-    create: true
-  hmacSecretData: true
-  vaultAuthRef: helper-prod/helper-prod-auth
-  refreshAfter: 1m
-  rolloutRestartTargets:
-    - kind: Deployment
-      name: helper-prod
-  type: kv-v1
----
-# Source: applications/templates/vpa.yaml
-apiVersion: autoscaling.k8s.io/v1
-kind: VerticalPodAutoscaler
-metadata:
-  name: helper-prod-vpa
-  namespace: helper-prod
-spec:
-  targetRef:
-    apiVersion: "apps/v1"
-    kind:       Deployment
-    name:       helper-prod
-  updatePolicy:
-    updateMode: "Auto"
-  resourcePolicy:
-    containerPolicies:
-      - containerName: "*"
-        controlledResources: [ "memory" ]
----
-# Source: applications/templates/virtual-service.yaml
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: helper-prod-domain-ingress
-  labels:
-    app.kubernetes.io/instance: xquare-ingress
-  namespace: helper-prod
-spec:
-  gateways:
-    - istio-system/xquare-ingressgateway
-  hosts:
-    - helper.xquare.app
-  http:
-    - name: helper
-      route:
-        - destination:
-            host: 'helper-prod.helper-prod.svc.cluster.local'
-            port:
-              number: 8080
-      corsPolicy:
-        allowOrigins:
-          - regex: ".*"
-        allowMethods:
-          - POST
-          - GET
-          - PUT
-          - PATCH
-          - DELETE
-          - OPTIONS
-        allowCredentials: true
-        allowHeaders:
-          - content-type
-          - authorization
-          - accept
-          - accept-encoding
-          - Refresh-Token
-          - X-Not-Using-Xquare-Auth
-          - Oauth-Token
-          - oa-token
-          - Request-User-Id
-          - Request-User-Role
-          - X-Refresh-Token
-          - x-identifier
-        maxAge: "24h"
