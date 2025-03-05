@@ -10,7 +10,7 @@ metadata:
     project: {{ .Values.name }}
     environment: {{ .Values.environment }}
 spec:
-  type: ClusterIP
+  type: {{ if eq .Values.name "mozu-server" }}LoadBalancer{{ else }}ClusterIP{{ end }}
   selector:
     app: {{ $fullname }}
   ports:

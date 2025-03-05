@@ -59,7 +59,7 @@ metadata:
     project: mozu-server
     environment: stag
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: mozu-server-stag
   ports:
