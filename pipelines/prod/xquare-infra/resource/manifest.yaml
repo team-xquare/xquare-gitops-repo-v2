@@ -58,8 +58,6 @@ metadata:
     app: xquare-infra-prod
     project: xquare-infra
     environment: prod
-  annotations:
-    
 spec:
   type: ClusterIP
   selector:

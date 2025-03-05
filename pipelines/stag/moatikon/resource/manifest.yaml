@@ -58,8 +58,6 @@ metadata:
     app: moatikon-stag
     project: moatikon
     environment: stag
-  annotations:
-    
 spec:
   type: ClusterIP
   selector:

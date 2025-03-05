@@ -58,8 +58,6 @@ metadata:
     app: daemaru-prod
     project: daemaru
     environment: prod
-  annotations:
-    
 spec:
   type: ClusterIP
   selector:

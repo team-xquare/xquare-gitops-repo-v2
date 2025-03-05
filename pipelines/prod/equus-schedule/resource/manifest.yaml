@@ -58,8 +58,6 @@ metadata:
     app: equus-schedule-prod
     project: equus-schedule
     environment: prod
-  annotations:
-    
 spec:
   type: ClusterIP
   selector:

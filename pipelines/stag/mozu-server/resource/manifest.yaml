@@ -58,13 +58,8 @@ metadata:
     app: mozu-server-stag
     project: mozu-server
     environment: stag
-  annotations:
-    
-    service.beta.kubernetes.io/aws-load-balancer-type: "alb"
-    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
-    
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: mozu-server-stag
   ports:
@@ -152,6 +147,27 @@ spec:
             initialDelaySeconds: 20
             periodSeconds: 10
             successThreshold: 3
+---
+# Source: applications/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mozu-server-ingress
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+spec:
+  rules:
+    - host: xquare.app
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mozu-server-stag
+                port:
+                  number: 80
 ---
 # Source: applications/templates/datadog-dashboard.yaml
 apiVersion: datadoghq.com/v1alpha1

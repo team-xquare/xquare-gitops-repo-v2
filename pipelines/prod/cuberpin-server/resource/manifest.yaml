@@ -58,8 +58,6 @@ metadata:
     app: cuberpin-server-prod
     project: cuberpin-server
     environment: prod
-  annotations:
-    
 spec:
   type: ClusterIP
   selector:
