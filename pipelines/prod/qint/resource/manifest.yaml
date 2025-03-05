@@ -58,8 +58,6 @@ metadata:
     app: qint-prod
     project: qint
     environment: prod
-  annotations:
-    
 spec:
   type: ClusterIP
   selector:

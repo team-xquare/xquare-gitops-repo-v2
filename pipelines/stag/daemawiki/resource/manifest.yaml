@@ -58,8 +58,6 @@ metadata:
     app: daemawiki-stag
     project: daemawiki
     environment: stag
-  annotations:
-    
 spec:
   type: ClusterIP
   selector:

@@ -58,8 +58,6 @@ metadata:
     app: moatikon-prod
     project: moatikon
     environment: prod
-  annotations:
-    
 spec:
   type: ClusterIP
   selector:

@@ -58,8 +58,6 @@ metadata:
     app: lotura-prod
     project: lotura
     environment: prod
-  annotations:
-    
 spec:
   type: ClusterIP
   selector:
