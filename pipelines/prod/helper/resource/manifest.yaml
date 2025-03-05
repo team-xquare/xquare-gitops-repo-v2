@@ -58,6 +58,8 @@ metadata:
     app: helper-prod
     project: helper
     environment: prod
+  annotations:
+    
 spec:
   type: ClusterIP
   selector:

@@ -58,6 +58,11 @@ metadata:
     app: mozu-server-prod
     project: mozu-server
     environment: prod
+  annotations:
+    
+    service.beta.kubernetes.io/aws-load-balancer-type: "alb"
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+    
 spec:
   type: LoadBalancer
   selector:

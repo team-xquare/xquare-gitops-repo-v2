@@ -58,6 +58,8 @@ metadata:
     app: casper-recruitment-stag
     project: casper-recruitment
     environment: stag
+  annotations:
+    
 spec:
   type: ClusterIP
   selector:

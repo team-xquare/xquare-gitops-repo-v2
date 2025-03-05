@@ -58,6 +58,8 @@ metadata:
     app: helper-stag
     project: helper
     environment: stag
+  annotations:
+    
 spec:
   type: ClusterIP
   selector:

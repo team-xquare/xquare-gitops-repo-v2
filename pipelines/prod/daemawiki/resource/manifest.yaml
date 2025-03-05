@@ -58,6 +58,8 @@ metadata:
     app: daemawiki-prod
     project: daemawiki
     environment: prod
+  annotations:
+    
 spec:
   type: ClusterIP
   selector:

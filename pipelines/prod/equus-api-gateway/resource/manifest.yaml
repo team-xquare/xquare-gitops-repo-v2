@@ -58,6 +58,8 @@ metadata:
     app: equus-api-gateway-prod
     project: equus-api-gateway
     environment: prod
+  annotations:
+    
 spec:
   type: ClusterIP
   selector:
