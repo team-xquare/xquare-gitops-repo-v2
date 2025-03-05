@@ -95,7 +95,7 @@ spec:
     matchLabels:
       app: equus-feed-prod
   template:
-    metadata:      
+    metadata:
       annotations:
         sidecar.istio.io/rewriteAppHTTPProbers: "false"
         sidecar.istio.io/proxyCPU: "5m"
@@ -131,8 +131,8 @@ spec:
           ports:
             - containerPort: 8080
           envFrom:
-          - secretRef:
-              name: equus-feed-prod
+            - secretRef:
+                name: equus-feed-prod
           resources:
             requests:
               memory: "500Mi"

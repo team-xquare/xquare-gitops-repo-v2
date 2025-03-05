@@ -95,7 +95,7 @@ spec:
     matchLabels:
       app: lotura-prod
   template:
-    metadata:      
+    metadata:
       annotations:
         sidecar.istio.io/rewriteAppHTTPProbers: "false"
         sidecar.istio.io/proxyCPU: "5m"
@@ -130,8 +130,8 @@ spec:
           ports:
             - containerPort: 3000
           envFrom:
-          - secretRef:
-              name: lotura-prod
+            - secretRef:
+                name: lotura-prod
           resources:
             requests:
               memory: "500Mi"
