@@ -1,0 +1,22 @@
+{{- $fullname := (printf "%s-%s" .Values.name .Values.environment) }}
+{{ if eq .Values.name "mozu-server" }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mozu-server-ingress
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+spec:
+  rules:
+    - host: xquare.app
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $fullname }}
+                port:
+                  number: 80
+{{- end }}
