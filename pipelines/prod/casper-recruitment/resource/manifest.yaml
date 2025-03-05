@@ -58,6 +58,8 @@ metadata:
     app: casper-recruitment-prod
     project: casper-recruitment
     environment: prod
+  annotations:
+    
 spec:
   type: ClusterIP
   selector:

@@ -58,6 +58,11 @@ metadata:
     app: mozu-server-stag
     project: mozu-server
     environment: stag
+  annotations:
+    
+    service.beta.kubernetes.io/aws-load-balancer-type: "alb"
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+    
 spec:
   type: LoadBalancer
   selector:
