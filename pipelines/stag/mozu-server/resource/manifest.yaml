@@ -153,7 +153,7 @@ kind: DatadogDashboard
 metadata:
   name: mozu-server-stag-dashboard
 spec:
-  title: Test
+  title: mozu-server-stag-dashboard
   description: null
   widgets: |
     [

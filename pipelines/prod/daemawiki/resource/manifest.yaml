@@ -153,7 +153,7 @@ kind: DatadogDashboard
 metadata:
   name: daemawiki-prod-dashboard
 spec:
-  title: Test
+  title: daemawiki-prod-dashboard
   description: null
   widgets: |
     [

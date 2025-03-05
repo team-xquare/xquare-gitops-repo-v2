@@ -4,7 +4,7 @@ kind: DatadogDashboard
 metadata:
   name: {{ $fullname }}-dashboard
 spec:
-  title: Test
+  title: {{ $fullname }}-dashboard
   description: null
   widgets: |
     [

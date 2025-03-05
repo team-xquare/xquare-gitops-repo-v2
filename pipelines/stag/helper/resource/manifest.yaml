@@ -153,7 +153,7 @@ kind: DatadogDashboard
 metadata:
   name: helper-stag-dashboard
 spec:
-  title: Test
+  title: helper-stag-dashboard
   description: null
   widgets: |
     [

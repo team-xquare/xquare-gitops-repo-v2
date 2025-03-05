@@ -152,7 +152,7 @@ kind: DatadogDashboard
 metadata:
   name: lotura-prod-dashboard
 spec:
-  title: Test
+  title: lotura-prod-dashboard
   description: null
   widgets: |
     [
