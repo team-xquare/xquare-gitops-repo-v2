@@ -9,6 +9,11 @@ metadata:
     app: {{ $fullname }}
     project: {{ .Values.name }}
     environment: {{ .Values.environment }}
+  annotations:
+    {{ if eq .Values.name "mozu-server" }}
+    service.beta.kubernetes.io/aws-load-balancer-type: "alb"
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+    {{ end }}
 spec:
   type: {{ if eq .Values.name "mozu-server" }}LoadBalancer{{ else }}ClusterIP{{ end }}
   selector:
