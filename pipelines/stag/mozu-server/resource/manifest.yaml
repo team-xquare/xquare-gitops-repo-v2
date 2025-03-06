@@ -59,7 +59,7 @@ metadata:
     project: mozu-server
     environment: stag
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: mozu-server-stag
   ports:
@@ -152,13 +152,16 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: mozu-server-ingress
+  name: mozu-server-stag-ingress
   annotations:
     kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/target-type: instance
     alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":443},{"HTTP":80}]'
+  namespace: mozu-stag
 spec:
   rules:
-    - host: xquare.app
+    - host: mozu-stag.xquare.app
       http:
         paths:
           - path: /
@@ -167,7 +170,7 @@ spec:
               service:
                 name: mozu-server-stag
                 port:
-                  number: 80
+                  number: 3000
 ---
 # Source: applications/templates/datadog-dashboard.yaml
 apiVersion: datadoghq.com/v1alpha1

@@ -59,7 +59,7 @@ metadata:
     project: mozu-server
     environment: prod
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: mozu-server-prod
   ports:
@@ -152,13 +152,16 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: mozu-server-ingress
+  name: mozu-server-prod-ingress
   annotations:
     kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/target-type: instance
     alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":443},{"HTTP":80}]'
+  namespace: mozu-prod
 spec:
   rules:
-    - host: xquare.app
+    - host: mozu-prod.xquare.app
       http:
         paths:
           - path: /
@@ -167,7 +170,7 @@ spec:
               service:
                 name: mozu-server-prod
                 port:
-                  number: 80
+                  number: 3000
 ---
 # Source: applications/templates/datadog-dashboard.yaml
 apiVersion: datadoghq.com/v1alpha1
