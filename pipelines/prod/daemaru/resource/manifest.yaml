@@ -126,7 +126,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: daemaru-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/daemaru-prod:prod-wxda1p3z
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/daemaru-prod:prod-5rtkf5ic
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
