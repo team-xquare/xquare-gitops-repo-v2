@@ -1,0 +1,10 @@
+club: daedongyeojido
+name: daedongyeojido-be
+organization: Team-jeong-ho-kim
+repository: -Daedongyeojido_BE_v3.5
+branch: develop
+environment: stag
+containerPort: 8080
+domain: daedongyeojido-stag-server.xquare.app
+language: java
+critical_service: false
