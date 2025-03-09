@@ -498,7 +498,7 @@ spec:
   gateways:
     - istio-system/xquare-ingressgateway
   hosts:
-    - dms-freshman-server.xquare.app
+    - dsm-freshman-server.xquare.app
   http:
     - name: fresh-backend
       route:
