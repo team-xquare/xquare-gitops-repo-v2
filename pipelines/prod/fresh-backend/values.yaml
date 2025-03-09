@@ -1,0 +1,10 @@
+club: test1
+name: fresh-backend
+organization: Eunho0922
+repository: DSM_Fresh_Backend
+branch: main
+environment: prod
+containerPort: 3000
+domain: dms-freshman-server.xquare.app
+language: javascript
+critical_service: false
