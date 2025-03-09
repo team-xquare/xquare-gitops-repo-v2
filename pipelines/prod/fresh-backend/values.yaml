@@ -5,6 +5,6 @@ repository: DSM_Fresh_Backend
 branch: main
 environment: prod
 containerPort: 3000
-domain: dms-freshman-server.xquare.app
+domain: dsm-freshman-server.xquare.app
 language: javascript
 critical_service: false
