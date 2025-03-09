@@ -2,9 +2,9 @@ club: osiria
 name: osiria
 organization: 4mjeo
 repository: Osiria
-branch: 
+branch: develop
 environment: stag
-containerPort: 0
-domain: .xquare.app
+containerPort: 8080
+domain: osiria-stag.xquare.app
 language: java
 critical_service: false
