@@ -5,6 +5,6 @@ repository: Osiria
 branch: develop
 environment: stag
 containerPort: 8080
-domain: osiria-stag.xquare.app
+domain: osiria-stag.xquare.app.xquare.app
 language: java
 critical_service: false
