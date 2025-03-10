@@ -126,7 +126,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: osiria-stag
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/osiria-stag:stag-2v8e20ud
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/osiria-stag:stag-t0ef14s5
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
