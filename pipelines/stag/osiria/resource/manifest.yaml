@@ -499,7 +499,7 @@ spec:
   gateways:
     - istio-system/xquare-ingressgateway
   hosts:
-    - osiria-stag.xquare.app.xquare.app
+    - osiria-stag.xquare.app
   http:
     - name: osiria
       route:
