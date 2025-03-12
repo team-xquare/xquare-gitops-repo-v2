@@ -1,0 +1,10 @@
+club: daemacoin
+name: daemacoin-server
+organization: DaemaCoin
+repository: deama_coin_backend
+branch: develop
+environment: stag
+containerPort: 3000
+domain: daemacoin-server-stag.xquare.app
+language: javascript
+critical_service: false
