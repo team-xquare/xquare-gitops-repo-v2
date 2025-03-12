@@ -126,7 +126,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: fresh-backend-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/fresh-backend-prod:prod-i70sj8ah
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/fresh-backend-prod:prod-e489gbkx
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
