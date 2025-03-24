@@ -125,7 +125,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: lotura-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/lotura-prod:prod-2yqwx3cw
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/lotura-prod:prod-q7bip6ey
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
