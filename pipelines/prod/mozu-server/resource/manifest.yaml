@@ -183,6 +183,7 @@ apiVersion: datadoghq.com/v1alpha1
 kind: DatadogDashboard
 metadata:
   name: mozu-server-prod-dashboard
+  namespace: monitoring
 spec:
   title: mozu-server-prod-dashboard
   description: null

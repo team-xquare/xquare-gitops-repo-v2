@@ -152,6 +152,7 @@ apiVersion: datadoghq.com/v1alpha1
 kind: DatadogDashboard
 metadata:
   name: casper-recruitment-stag-dashboard
+  namespace: monitoring
 spec:
   title: casper-recruitment-stag-dashboard
   description: null

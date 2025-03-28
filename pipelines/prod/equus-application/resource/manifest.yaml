@@ -152,6 +152,7 @@ apiVersion: datadoghq.com/v1alpha1
 kind: DatadogDashboard
 metadata:
   name: equus-application-prod-dashboard
+  namespace: monitoring
 spec:
   title: equus-application-prod-dashboard
   description: null
