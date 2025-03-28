@@ -152,6 +152,7 @@ apiVersion: datadoghq.com/v1alpha1
 kind: DatadogDashboard
 metadata:
   name: qint-prod-dashboard
+  namespace: monitoring
 spec:
   title: qint-prod-dashboard
   description: null

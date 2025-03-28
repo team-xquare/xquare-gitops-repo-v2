@@ -152,6 +152,7 @@ apiVersion: datadoghq.com/v1alpha1
 kind: DatadogDashboard
 metadata:
   name: daemawiki-prod-dashboard
+  namespace: monitoring
 spec:
   title: daemawiki-prod-dashboard
   description: null
