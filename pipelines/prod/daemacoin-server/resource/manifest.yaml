@@ -125,7 +125,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
         - name: daemacoin-server-prod
-          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/daemacoin-server-prod:prod-m3zs9i10
+          image: 786584124104.dkr.ecr.ap-northeast-2.amazonaws.com/daemacoin-server-prod:prod-k8ek81ve
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
