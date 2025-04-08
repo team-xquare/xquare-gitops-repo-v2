@@ -469,24 +469,6 @@ spec:
       name: daemacoin-server-prod
   type: kv-v1
 ---
-# Source: applications/templates/vpa.yaml
-apiVersion: autoscaling.k8s.io/v1
-kind: VerticalPodAutoscaler
-metadata:
-  name: daemacoin-server-prod-vpa
-  namespace: daemacoin-prod
-spec:
-  targetRef:
-    apiVersion: "apps/v1"
-    kind:       Deployment
-    name:       daemacoin-server-prod
-  updatePolicy:
-    updateMode: "Auto"
-  resourcePolicy:
-    containerPolicies:
-      - containerName: "*"
-        controlledResources: [ "memory" ]
----
 # Source: applications/templates/virtual-service.yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService

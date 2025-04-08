@@ -469,21 +469,3 @@ spec:
     - kind: Deployment
       name: equus-application-prod
   type: kv-v1
----
-# Source: applications/templates/vpa.yaml
-apiVersion: autoscaling.k8s.io/v1
-kind: VerticalPodAutoscaler
-metadata:
-  name: equus-application-prod-vpa
-  namespace: entry-prod
-spec:
-  targetRef:
-    apiVersion: "apps/v1"
-    kind:       Deployment
-    name:       equus-application-prod
-  updatePolicy:
-    updateMode: "Auto"
-  resourcePolicy:
-    containerPolicies:
-      - containerName: "*"
-        controlledResources: [ "memory" ]
