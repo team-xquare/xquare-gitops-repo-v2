@@ -152,6 +152,7 @@ apiVersion: datadoghq.com/v1alpha1
 kind: DatadogDashboard
 metadata:
   name: fresh-backend-prod-dashboard
+  namespace: test1-prod
 spec:
   title: fresh-backend-prod-dashboard
   description: null

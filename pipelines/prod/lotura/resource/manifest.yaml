@@ -151,6 +151,7 @@ apiVersion: datadoghq.com/v1alpha1
 kind: DatadogDashboard
 metadata:
   name: lotura-prod-dashboard
+  namespace: nonamed-prod
 spec:
   title: lotura-prod-dashboard
   description: null
