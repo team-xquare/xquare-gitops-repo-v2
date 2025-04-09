@@ -183,6 +183,7 @@ apiVersion: datadoghq.com/v1alpha1
 kind: DatadogDashboard
 metadata:
   name: mozu-server-stag-dashboard
+  namespace: mozu-stag
 spec:
   title: mozu-server-stag-dashboard
   description: null

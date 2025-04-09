@@ -156,6 +156,7 @@ apiVersion: datadoghq.com/v1alpha1
 kind: DatadogDashboard
 metadata:
   name: xquare-infra-prod-dashboard
+  namespace: xquare-prod
 spec:
   title: xquare-infra-prod-dashboard
   description: null

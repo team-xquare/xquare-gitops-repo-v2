@@ -152,6 +152,7 @@ apiVersion: datadoghq.com/v1alpha1
 kind: DatadogDashboard
 metadata:
   name: helper-stag-dashboard
+  namespace: helper-stag
 spec:
   title: helper-stag-dashboard
   description: null
