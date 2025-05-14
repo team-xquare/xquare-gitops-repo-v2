@@ -1,0 +1,10 @@
+club: keep
+name: keep
+organization: Keep-DSM
+repository: keep-Backend
+branch: develop
+environment: stag
+containerPort: 3306
+domain: keep-stag.xquare.app
+language: javascript
+critical_service: 
