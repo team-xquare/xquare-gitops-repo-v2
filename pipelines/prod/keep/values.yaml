@@ -1,0 +1,10 @@
+club: keep
+name: keep
+organization: Keep-DSM
+repository: keep-Backend
+branch: main
+environment: prod
+containerPort: 3306
+domain: keep-prod.xquare.app
+language: javascript
+critical_service: 
